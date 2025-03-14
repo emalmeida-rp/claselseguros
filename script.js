@@ -1,4 +1,5 @@
 //Calcular la antiguedad del auto
+
 let inicio = true;
 while (inicio) {
     const añoactual = 2025;
