@@ -114,10 +114,10 @@ if (nombreLocalidad) {
     alert("Operacion cancelada por el usuario.");
 }
 
-function mostrarFechaHora() {
-    const ahora = new Date();
-    const fechaHora = ahora.toLocaleString();
-    document.getElementById("fechaHoraActual").textContent = fechaHora;
-}
-setInterval(mostrarFechaHora, 1000)
-mostrarFechaHora()
+// function mostrarFechaHora() {
+//     const ahora = new Date();
+//     const fechaHora = ahora.toLocaleString();
+//     document.getElementById("fechaHoraActual").textContent = fechaHora;
+// }
+// setInterval(mostrarFechaHora, 1000)
+// mostrarFechaHora()
