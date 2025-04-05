@@ -1,38 +1,4 @@
-//Calcular la antiguedad del auto
-
-let inicio = true;
-while (inicio) {
-    const añoactual = 2025;
-    let antiguedadAuto = parseInt(prompt('Ingrese el año de fabricacion del vehiculo. Por ej: 2021'));
-    let antiguedad = calcularAntiguedad(antiguedadAuto, añoactual);
-
-    if (antiguedad <= 5 && antiguedad >= 0) {
-        alert(`El auto es nuevo y tiene ${antiguedad} años de Antiguedad`);
-        break;
-    } else if (antiguedad >= 5 && antiguedad <= 15) {
-        alert(`El auto está en buen estado y tiene ${antiguedad} años de Antiguedad`);
-        break;
-    } else if (antiguedad >= 15 && antiguedad <= 25) {
-        alert(`Requiere inspeccion ya que tiene ${antiguedad} años de Antiguedad`);
-        break;
-    } else if (antiguedad > 25 && antiguedad <= 60) {
-        alert(`Tu automovil excede el limite requerido de antiguedad para contratar una cobertura. 
-            El máximo permitido es hasta 25 años.
-            - Antiguedad Automovil: ${antiguedad} años
-            - Año ingresado:${antiguedadAuto}`
-        );
-        break;
-    } else {
-        alert('El año ingresado no es válido')
-        break;
-    }
-}
-
-function calcularAntiguedad(antiguedadAuto, añoactual) {
-    return añoactual - antiguedadAuto;
-}
-
-//Array de regiones extendido de todas las zonas de BS AS (son varias, esta compactado)
+//Array de regiones extendido de todas las zonas de BS AS
 const zonasBsas = [
     {
         zona: "AMBA (Conurbano Bonaerense)",
@@ -85,34 +51,108 @@ const zonasBsas = [
             "Coronel Rosales", "Patagones"]
     }
 ];
-console.log(zonasBsas)
+//Selector de temas
+document.addEventListener('DOMContentLoaded', function() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const languageSelect = document.getElementById('language-select');
+    const body = document.body;
+    const htmlElement = document.documentElement;
+    const storedTheme = localStorage.getItem('theme');
+    const storedLanguage = localStorage.getItem('language');
 
-function buscarLocalidad(nombreLocalidad) {
-    let normalizarLocalidad = nombreLocalidad.toLowerCase();  //formatea a minúscula los caracteres del prompt
-
-    for (let i = 0; i < zonasBsas.length; i++) {
-        if (zonasBsas[i].localidades.some(localidad => localidad.toLowerCase() === normalizarLocalidad)) {
-            return {
-                localidad: nombreLocalidad,
-                zona: zonasBsas[i].zona
-            };
+    // Función para aplicar el tema
+    function setTheme(theme) {
+        if (theme === 'dark') {
+            body.classList.add('dark-theme');
+            themeToggle.checked = true;
+        } else {
+            body.classList.remove('dark-theme');
+            themeToggle.checked = false;
         }
+        localStorage.setItem('theme', theme);
     }
-    return "La localidad no fue encontrada o aún no fue habilitada. Intente con otra, por ejemplo: La Plata.";;
-}
 
-let nombreLocalidad = prompt("Introduzca el nombre de la localidad, por ejemplo: Tigre");
+    // Función para aplicar el lenguaje
+    function setLanguage(lang) {
+        htmlElement.lang = lang; // Establecer el atributo lang del html
+        localStorage.setItem('language', lang);
+        console.log(`Idioma aplicado: ${lang}`);
+    }
 
-if (nombreLocalidad) {
-    let resultadoLocalidad = buscarLocalidad(nombreLocalidad);
-    if (typeof resultadoLocalidad === "string") {
-        alert(resultadoLocalidad);
+    // Establece el tema guardado al cargar la página
+    if (storedTheme) {
+        setTheme(storedTheme);
     } else {
-        alert(`La localidad ${resultadoLocalidad.localidad} se encuentra en zona ${resultadoLocalidad.zona} y está habilitada!!`);
+        setTheme('light'); // Establecer tema claro por defecto
     }
-} else {
-    alert("Operacion cancelada por el usuario.");
-}
+
+    // Establece el lenguaje guardado al cargar la página
+    if (storedLanguage) {
+        languageSelect.value = storedLanguage;
+        setLanguage(storedLanguage); // Aplicar el lenguaje guardado
+    } else {
+        setLanguage('es'); // Establecer idioma español por defecto
+    }
+
+    // Evento para cambiar el tema
+    themeToggle.addEventListener('change', function() {
+        const newTheme = this.checked ? 'dark' : 'light';
+        setTheme(newTheme);
+    });
+
+    // Evento para cambiar el lenguaje
+    languageSelect.addEventListener('change', function() {
+        const selectedLanguage = this.value;
+        setLanguage(selectedLanguage);
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function buscarLocalidad(nombreLocalidad) {
+//     let normalizarLocalidad = nombreLocalidad.toLowerCase();  //formatea a minúscula los caracteres del prompt
+
+//     for (let i = 0; i < zonasBsas.length; i++) {
+//         if (zonasBsas[i].localidades.some(localidad => localidad.toLowerCase() === normalizarLocalidad)) {
+//             return {
+//                 localidad: nombreLocalidad,
+//                 zona: zonasBsas[i].zona
+//             };
+//         }
+//     }
+//     return "La localidad no fue encontrada o aún no fue habilitada. Intente con otra, por ejemplo: La Plata.";;
+// }
+
+// let nombreLocalidad = prompt("Introduzca el nombre de la localidad, por ejemplo: Tigre");
+
+// if (nombreLocalidad) {
+//     let resultadoLocalidad = buscarLocalidad(nombreLocalidad);
+//     if (typeof resultadoLocalidad === "string") {
+//         alert(resultadoLocalidad);
+//     } else {
+//         alert(`La localidad ${resultadoLocalidad.localidad} se encuentra en zona ${resultadoLocalidad.zona} y está habilitada!!`);
+//     }
+// } else {
+//     alert("Operacion cancelada por el usuario.");
+// }
 
 // function mostrarFechaHora() {
 //     const ahora = new Date();
