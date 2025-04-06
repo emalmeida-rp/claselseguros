@@ -19,16 +19,19 @@ header {
   background: linear-gradient(90deg, rgba(0, 25, 91, 1) 0%, rgba(9, 88, 121, 1) 20%, rgba(95, 189, 208, 1) 100%);
   height: auto;
   padding: 20px;
-  color: white;
+  /* color: white; */
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body.dark-theme {
   background-color: #292828;
   color: #f9f9f9;
+  transition: background-color 0.3s ease;
 }
 
 .navegar {
+  background: rgb(157,216,217);
+  background: linear-gradient(90deg, rgba(157,216,217,1) 4%, rgba(176,213,221,1) 50%, rgba(135,217,223,0.8715861344537815) 99%);
   position: sticky;
   padding: 20px;
   border-radius: 8px;
@@ -36,8 +39,20 @@ body.dark-theme {
   transition: background-color 0.3s ease;
 }
 
-.dark-theme .container {
-  background-color: #444;
+.dark-theme .navegar {
+  background: rgb(67,105,106);
+  background: linear-gradient(90deg, rgba(67,105,106,1) 4%, rgba(55,110,122,1) 50%, rgba(29,57,59,0.8715861344537815) 99%);
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.dark-theme .navbar-dark .navbar-nav .nav-link{
+    color: rgb(238, 231, 231);
+    font-size: larger;
+}
+
+.dark-theme .navbar-brand {
+  color: rgb(238, 231, 231) ;
 }
 
 h1 {
@@ -61,10 +76,6 @@ h1 {
   margin-right: 10px;
 }
 
-#theme-toggle {
-  /* Estilos del botón (ahora oculto) */
-}
-
 #language-select {
   padding: 8px;
   border: 1px solid #ccc;
@@ -76,20 +87,7 @@ h1 {
   background-color: #555;
   color: #eee;
   border-color: #777;
-}
-
-.content {
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #fff;
   transition: background-color 0.3s ease;
-}
-
-.dark-theme .content {
-  background-color: #555;
-  color: #f9f9f9;
-  border-color: #777;
 }
 
 .theme-switch-wrapper {
@@ -154,10 +152,11 @@ input:checked + .slider:before {
 .navbar {
   background: linear-gradient(90deg, rgba(0, 25, 91, 0.8) 0%, rgba(9, 88, 121, 0.8) 20%, rgba(95, 189, 208, 0.8) 100%);
   /* Degradado con transparencia */
+  transition: background-color 0.3s ease;
 }
 
-.navbar-dark .navbar-nav .nav-link {
-  color: white;
+.navbar-dark .navbar-nav .nav-link, .navbar-brand {
+  color: rgb(48, 37, 37);
   font-size: larger;
 }
 
@@ -347,38 +346,4 @@ footer{
   margin: 0 auto;
   padding: 20px;
 }
-
-#results-container {
-  margin-top: 20px;
-  border: 1px solid #ddd;
-  padding: 15px;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-.result-item {
-  margin-bottom: 15px;
-  padding: 10px;
-  border: 1px solid #eee;
-  border-radius: 3px;
-  background-color: #fff;
-}
-
-.result-item h3 {
-  margin-top: 0;
-  margin-bottom: 5px;
-}
-
-.result-item ul {
-  list-style: disc;
-  padding-left: 20px;
-  margin-bottom: 0;
-}
-
-.no-results {
-  color: #dc3545;
-  font-weight: bold;
-}
-
-
 

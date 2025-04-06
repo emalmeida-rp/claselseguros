@@ -1,4 +1,4 @@
-//Array de regiones extendido de todas las zonas de BS AS
+//Array de regiones extendido de todas las zonas de BS AS (son varias, esta compactado)
 const zonasBsas = [
     {
         zona: "AMBA (Conurbano Bonaerense)",
@@ -51,6 +51,7 @@ const zonasBsas = [
             "Coronel Rosales", "Patagones"]
     }
 ];
+
 //Selector de temas
 document.addEventListener('DOMContentLoaded', function() {
     const themeToggle = document.getElementById('theme-toggle');
@@ -76,17 +77,16 @@ document.addEventListener('DOMContentLoaded', function() {
     function setLanguage(lang) {
         htmlElement.lang = lang; // Establecer el atributo lang del html
         localStorage.setItem('language', lang);
-        console.log(`Idioma aplicado: ${lang}`);
     }
 
-    // Establece el tema guardado al cargar la página
+    // Establecer el tema guardado al cargar la página
     if (storedTheme) {
         setTheme(storedTheme);
     } else {
         setTheme('light'); // Establecer tema claro por defecto
     }
 
-    // Establece el lenguaje guardado al cargar la página
+    // Establecer el lenguaje guardado al cargar la página
     if (storedLanguage) {
         languageSelect.value = storedLanguage;
         setLanguage(storedLanguage); // Aplicar el lenguaje guardado
@@ -106,59 +106,3 @@ document.addEventListener('DOMContentLoaded', function() {
         setLanguage(selectedLanguage);
     });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function buscarLocalidad(nombreLocalidad) {
-//     let normalizarLocalidad = nombreLocalidad.toLowerCase();  //formatea a minúscula los caracteres del prompt
-
-//     for (let i = 0; i < zonasBsas.length; i++) {
-//         if (zonasBsas[i].localidades.some(localidad => localidad.toLowerCase() === normalizarLocalidad)) {
-//             return {
-//                 localidad: nombreLocalidad,
-//                 zona: zonasBsas[i].zona
-//             };
-//         }
-//     }
-//     return "La localidad no fue encontrada o aún no fue habilitada. Intente con otra, por ejemplo: La Plata.";;
-// }
-
-// let nombreLocalidad = prompt("Introduzca el nombre de la localidad, por ejemplo: Tigre");
-
-// if (nombreLocalidad) {
-//     let resultadoLocalidad = buscarLocalidad(nombreLocalidad);
-//     if (typeof resultadoLocalidad === "string") {
-//         alert(resultadoLocalidad);
-//     } else {
-//         alert(`La localidad ${resultadoLocalidad.localidad} se encuentra en zona ${resultadoLocalidad.zona} y está habilitada!!`);
-//     }
-// } else {
-//     alert("Operacion cancelada por el usuario.");
-// }
-
-// function mostrarFechaHora() {
-//     const ahora = new Date();
-//     const fechaHora = ahora.toLocaleString();
-//     document.getElementById("fechaHoraActual").textContent = fechaHora;
-// }
-// setInterval(mostrarFechaHora, 1000)
-// mostrarFechaHora()
-
