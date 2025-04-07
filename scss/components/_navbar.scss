@@ -48,5 +48,12 @@
 
     .navbar-brand {
         color: rgb(238, 231, 231);
+        &:hover {
+            color: #3bc1e2;
+        }
+    
+        &:focus {
+            color: #3bc1e2;
+        }
     }
 }

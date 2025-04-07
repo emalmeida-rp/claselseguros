@@ -125,6 +125,12 @@ input:focus + .slider {
 .dark-theme .navbar-brand {
   color: rgb(238, 231, 231);
 }
+.dark-theme .navbar-brand:hover {
+  color: #3bc1e2;
+}
+.dark-theme .navbar-brand:focus {
+  color: #3bc1e2;
+}
 
 .theme-selector,
 .language-selector {
