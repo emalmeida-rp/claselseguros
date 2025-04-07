@@ -60,13 +60,6 @@ h1 {
   margin-bottom: 20px;
 }
 
-.settings {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
 .theme-selector, .language-selector {
   display: flex;
   align-items: center;
@@ -175,13 +168,6 @@ main {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
-  color: #333333;
-  margin-bottom: 20px;
-  text-align: center;
-  color: aliceblue;
-}
-
 h3 {
   color: #333333;
   margin-bottom: 10px;
@@ -238,7 +224,7 @@ aside {
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  padding: 20rem;
+  padding: 4rem;
   background-image: url(../img/background.jpg);
   filter: hue-rotate(329deg)
 }
@@ -258,6 +244,7 @@ footer{
 
 .footer-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
   max-width: 1200px;
   margin: 0 auto;

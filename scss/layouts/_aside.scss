@@ -1,0 +1,21 @@
+aside {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+    height: auto;
+    justify-content: space-around;
+    align-items: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    padding: 4rem;
+    background-image: url(../img/background.jpg);
+    filter: hue-rotate(329deg);
+    h2 {
+        font-style: oblique;
+        color: #ffffff;
+        filter: drop-shadow(2px 4px 6px black);
+        font-size: xxx-large;
+    }
+}

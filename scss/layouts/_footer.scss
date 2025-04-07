@@ -1,0 +1,130 @@
+footer {
+    margin: 0;
+    padding: 30px;
+    background-color: #add8e6;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-lists {
+    display: flex;
+    gap: 30px;
+    h3 {
+        margin-bottom: 10px;
+        color: #eee;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        li {
+            margin-bottom: 5px;
+            a {
+                color: #ccc;
+                text-decoration: none;
+                transition: color 0.3s ease;
+                &:hover {
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+// .footer-list h3 {
+//     margin-bottom: 10px;
+//     color: #eee;
+// }
+
+// .footer-list ul {
+//     list-style: none;
+//     padding: 0;
+//     margin: 0;
+// }
+
+// .footer-list ul li {
+//     margin-bottom: 5px;
+// }
+
+// .footer-list ul li a {
+//     color: #ccc;
+//     text-decoration: none;
+//     transition: color 0.3s ease;
+// }
+
+// .footer-list ul li a:hover {
+//     color: #fff;
+// }
+
+.footer-location{ 
+    h3 {
+    margin-bottom: 10px;
+    color: #eee;
+    }
+}
+
+.location-format {
+    background-color: #444;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: left;
+
+    p {
+        margin-bottom: 5px;
+        color: #ccc;
+    }
+
+    span {
+        font-weight: bold;
+        color: #fff;
+    }
+
+    button {
+        background-color: #5cb85c;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: background-color 0.3s ease;
+        &:hover{
+            background-color: #4cae4c;
+        }
+    }
+    #mapa {
+    margin-top: 15px;
+    background-color: #555;
+    border-radius: 5px;
+    overflow: hidden;
+    }
+}
+
+// .location-format button:hover {
+//     background-color: #4cae4c;
+// }
+
+// .location-format #mapa {
+//     margin-top: 15px;
+//     background-color: #555;
+//     border-radius: 5px;
+//     overflow: hidden;
+//     /* Para que el iframe no se salga del borde */
+// }
+
+.footer-copyright {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #444;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}

@@ -1,0 +1,49 @@
+.theme-selector,
+.language-selector {
+    display: flex;
+    align-items: center;
+    label {
+        margin-right: 10px;
+    }
+}
+
+// .theme-selector label,
+// .language-selector label {
+//     margin-right: 10px;
+// }
+
+#language-select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.dark-theme{ 
+    #language-select {
+    background-color: #555;
+    color: #eee;
+    border-color: #777;
+    transition: background-color 0.3s ease;
+    }
+}
+
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    label {
+        margin-right: 10px;
+    }
+}
+
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+}
