@@ -1,0 +1,258 @@
+.contenedor-botones {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    overflow-x: auto; /* Para que las tarjetas no se rompan en pantallas pequeñas */
+}
+
+.tarjeta-boton {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    min-width: 150px; /* Ancho mínimo para las tarjetas */
+}
+
+.tarjeta-boton:hover,
+.tarjeta-boton:focus {
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+.tarjeta-boton.active {
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.3);
+    border-color: #007bff; /* Un color distintivo para la tarjeta activa */
+}
+
+.icono {
+    font-size: 2em;
+    margin-bottom: 10px;
+    display: block;
+    color: #555; /* Un color para los iconos */
+}
+
+h3 {
+    margin-top: 0;
+    font-size: 1em;
+    color: #333;
+}
+
+
+/* ... estilos anteriores ... */
+
+.contenedor-coberturas {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    overflow-x: auto; /* Para que las tarjetas de cobertura no se rompan */
+}
+
+.tarjeta-cobertura {
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    min-width: 120px;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.tarjeta-cobertura:hover,
+.tarjeta-cobertura:focus {
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.tarjeta-cobertura.active {
+    border-color: #28a745; /* Otro color distintivo para la cobertura activa */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.icono-cobertura {
+    font-size: 1.5em;
+    margin-bottom: 5px;
+    display: block;
+    color: #777;
+}
+
+.tarjeta-cobertura h4 {
+    margin-top: 0;
+    font-size: 0.9em;
+    color: #444;
+}
+
+/* ... (estilos anteriores) ... */
+
+.formulario-contacto {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.formulario-contacto h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.formulario-contacto div {
+    margin-bottom: 10px;
+}
+
+.formulario-contacto label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.formulario-contacto input[type="text"],
+.formulario-contacto input[type="tel"],
+.formulario-contacto input[type="email"],
+.formulario-contacto input[type="number"],
+.formulario-contacto select {
+    width: calc(100% - 12px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.formulario-contacto button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.formulario-contacto button:hover {
+    background-color: #0056b3;
+}
+
+.formulario-contacto button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.error-message {
+    display: block;
+    color: red;
+    font-size: 0.9em;
+    margin-top: 3px;
+}
+
+/* Estilos del Modal */
+.modal {
+    display: none; /* Inicialmente oculto */
+    position: fixed; /* Para que se quede en su lugar al hacer scroll */
+    z-index: 1; /* Para que esté por encima de otros elementos */
+    left: 0;
+    top: 0;
+    width: 100%; /* Ancho completo */
+    height: 100%; /* Alto completo */
+    overflow: auto; /* Habilitar scroll si el contenido es muy largo */
+    background-color: rgba(0,0,0,0.4); /* Fondo oscuro con transparencia */
+}
+
+.modal-contenido {
+    background-color: #fefefe;
+    margin: 15% auto; /* Centrar vertical y horizontalmente */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Ancho del contenido del modal */
+    border-radius: 8px;
+    position: relative;
+}
+
+.cerrar-modal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.cerrar-modal:hover,
+.cerrar-modal:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#modal-titulo {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+#modal-datos {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 15px;
+}
+
+#modal-datos li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+#modal-datos li:last-child {
+    border-bottom: none;
+}
+
+.modal-botones {
+    text-align: center;
+}
+
+.modal-botones button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    margin: 5px;
+}
+
+.modal-botones button:hover {
+    background-color: #0056b3;
+}
+
+.modal-botones button#cancelar-operacion-btn {
+    background-color: #dc3545;
+}
+
+.modal-botones button#cancelar-operacion-btn:hover {
+    background-color: #c82333;
+}
+
+.modal-botones button#editar-datos-btn {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.modal-botones button#editar-datos-btn:hover {
+    background-color: #e0a800;
+}

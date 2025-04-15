@@ -8,42 +8,94 @@
         crossorigin="anonymous">
     <title>CLASEL Asesores de seguros</title>
     <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon.ico">
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/stylesas.css">
 </head>
 
 <body>
     <header>
         <h1 class="text-fluid"><img src="../img/logo.png" alt="logo" class="img-fluid icon-header">Asesores de seguros y
-            Gestoría integral</h1>
-        <nav class="navbar navbar-expand-lg navbar-dark">
-            <div class="container navegar">
-                <a class="navbar-brand" href="../index.html">Menú</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Contacto</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Contrata tu seguro</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Gestoría</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Compañías</a>
-                        </li>
+            Gestoría integral del automotor</h1>
+    </header>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+            <a class="navbar-brand" href="../index.html">Menú</a>
+            <div class="theme-switch-wrapper">
+                <label class="theme-label" for="theme-toggle">Tema:</label>
+                <label class="theme-switch">
+                    <input type="checkbox" id="theme-toggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="language-selector">
+                <label for="language-select">Idioma:</label>
+                <select id="language-select">
+                    <option value="es" selected>Español</option>
+                    <option value="en">Inglés</option>
+                    <option value="fr">Francés</option>
+                </select>
+            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contacto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/contratarseguro.html">Contrata tu seguro</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Gestoría</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Compañías</a>
+                    </li>
+                </ul>
+            </div>
+    </nav>
+    <main>
+        <div class="contenedor-botones">
+            <div class="tarjeta-boton" data-target="inmuebles">
+                <i class="icono">🏠</i>
+                <h3>Seguros Inmuebles</h3>
+            </div>
+            <div class="tarjeta-boton" data-target="vida">
+                <i class="icono">❤️</i>
+                <h3>Seguro de Vida</h3>
+            </div>
+            <div class="tarjeta-boton" data-target="automovil">
+                <i class="icono">🚗</i>
+                <h3>Seguro Automóvil</h3>
+            </div>
+            <div class="tarjeta-boton" data-target="salud">
+                <i class="icono">⚕️</i>
+                <h3>Seguro de Salud</h3>
+            </div>
+        </div>
+        <div id="modal-resumen" class="modal">
+            <div class="modal-contenido">
+                <span class="cerrar-modal">&times;</span>
+                <h2>Resumen de su Solicitud</h2>
+                <h3 id="modal-titulo"></h3>
+                <ul id="modal-datos">
                     </ul>
+                <div class="modal-botones">
+                    <button id="editar-datos-btn">Editar Datos</button>
+                    <button id="enviar-mail-btn">Enviar por Email</button>
+                    <button id="enviar-whatsapp-btn">Enviar por WhatsApp</button>
+                    <button id="cancelar-operacion-btn">Cancelar y Reiniciar</button>
                 </div>
             </div>
-        </nav>
-    </header>
-    <main>
+        </div>
+
+        <div class="contenedor-formularios">
+        </div>
+
+        
         
     </main>
-    <script src="../app/script.js"></script>
+    <script src="../app/contratar.js"></script>
+    <script src="./app.js"></script>
 </body>
 </html>
