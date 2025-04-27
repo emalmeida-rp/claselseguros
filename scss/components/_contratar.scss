@@ -1,187 +1,304 @@
-.contenedor-botones {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 30px;
-    overflow-x: auto; /* Para que las tarjetas no se rompan en pantallas pequeñas */
+@use "sass:color";
+
+
+// Variables
+$color-primary: #2563eb;
+$color-primary-light: #3b82f6;
+$color-success: #10b981;
+$color-danger: #ef4444;
+$color-warning: #f59e0b;
+$color-text: #1f2937;
+$color-text-light: #6b7280;
+$color-border: #e5e7eb;
+$color-background: #ffffff;
+$color-shadow: rgba(0, 0, 0, 0.05);
+$border-radius: 12px;
+$transition-speed: 0.2s;
+
+// Mixins
+@mixin card-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all $transition-speed ease;
 }
 
-.tarjeta-boton {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 15px;
-    text-align: center;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-    min-width: 150px; /* Ancho mínimo para las tarjetas */
-}
-
-.tarjeta-boton:hover,
-.tarjeta-boton:focus {
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+@mixin card-hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     transform: translateY(-2px);
 }
 
-.tarjeta-boton.active {
-    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.3);
-    border-color: #007bff; /* Un color distintivo para la tarjeta activa */
+@mixin form-input {
+    width: calc(100% - 12px);
+    padding: 10px 12px;
+    border: 2px solid $color-border;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: all $transition-speed ease;
+    background-color: $color-background;
+
+    &:focus {
+        outline: none;
+        border-color: $color-primary;
+        box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+    }
+
+    &.error {
+        border-color: $color-danger;
+        box-shadow: 0 0 0 3px rgba($color-danger, 0.1);
+    }
+
+    &.success {
+        border-color: $color-success;
+        box-shadow: 0 0 0 3px rgba($color-success, 0.1);
+    }
+}
+
+.contenedor-botones {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: auto;
+    gap: 15px;
+    margin-bottom: 30px;
+    justify-content: space-evenly;
+    align-items: center;
+
+    h3 {
+        margin-top: 0;
+        font-size: 1em;
+        color: $color-text;
+    }
+}
+
+.tarjeta-boton {
+    background: linear-gradient(145deg, $color-background, darken($color-background, 2%));
+    border: 1px solid $color-border;
+    border-radius: $border-radius;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    @include card-shadow;
+    min-width: 160px;
+    transition: all $transition-speed ease;
+
+    h3 {
+        margin-top: 0;
+        font-size: 1em;
+        color: $color-text;
+        transition: all $transition-speed ease;
+    }
+
+    &:hover,
+    &:focus {
+        @include card-hover;
+        background: linear-gradient(145deg, darken($color-background, 1%), darken($color-background, 3%));
+    }
+
+    &.active {
+        background: linear-gradient(145deg, $color-primary, $color-primary-light);
+        border-color: $color-primary;
+        color: white;
+        box-shadow: 0 10px 15px -3px rgba($color-primary, 0.3), 0 4px 6px -2px rgba($color-primary, 0.2);
+        
+        h3 {
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .icono {
+            color: white;
+            background: rgba(white, 0.2);
+            transform: scale(1.1);
+        }
+    }
 }
 
 .icono {
-    font-size: 2em;
-    margin-bottom: 10px;
+    font-size: 2.5em;
+    margin-bottom: 12px;
     display: block;
-    color: #555; /* Un color para los iconos */
+    color: $color-text-light;
+    transition: all $transition-speed ease;
+    line-height: 1;
+    padding: 5px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, rgba($color-primary, 0.1), rgba($color-primary, 0.05));
+    
+    .tarjeta-boton.active & {
+        color: white;
+        background: rgba(white, 0.2);
+        transform: scale(1.1);
+    }
 }
-
-h3 {
-    margin-top: 0;
-    font-size: 1em;
-    color: #333;
-}
-
-
-/* ... estilos anteriores ... */
 
 .contenedor-coberturas {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     margin-top: 15px;
     margin-bottom: 20px;
     padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    overflow-x: auto; /* Para que las tarjetas de cobertura no se rompan */
+    justify-content: center;
+    border-radius: $border-radius;
 }
 
 .tarjeta-cobertura {
-    background-color: #fff;
-    border: 1px solid #eee;
-    border-radius: 6px;
-    padding: 10px;
+    background: linear-gradient(145deg, $color-background, darken($color-background, 2%));
+    border: 1px solid $color-border;
+    border-radius: 10px;
+    padding: 15px;
     text-align: center;
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    min-width: 120px;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
+    @include card-shadow;
+    min-width: 130px;
+    transition: all $transition-speed ease;
 
-.tarjeta-cobertura:hover,
-.tarjeta-cobertura:focus {
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
-    transform: translateY(-1px);
-}
+    h4 {
+        margin-top: 0;
+        font-size: 0.9em;
+        color: $color-text;
+        transition: all $transition-speed ease;
+    }
 
-.tarjeta-cobertura.active {
-    border-color: #28a745; /* Otro color distintivo para la cobertura activa */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    &:hover,
+    &:focus {
+        @include card-hover;
+        background: linear-gradient(145deg, darken($color-background, 1%), darken($color-background, 3%));
+    }
+
+    &.active {
+        background: linear-gradient(145deg, $color-success, darken($color-success, 5%));
+        border-color: $color-success;
+        color: white;
+        box-shadow: 0 10px 15px -3px rgba($color-success, 0.3), 0 4px 6px -2px rgba($color-success, 0.2);
+        
+        h4 {
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .icono-cobertura {
+            color: white;
+            background: rgba(white, 0.2);
+            transform: scale(1.1);
+        }
+    }
 }
 
 .icono-cobertura {
-    font-size: 1.5em;
-    margin-bottom: 5px;
+    font-size: 1.8em;
+    margin-bottom: 8px;
     display: block;
-    color: #777;
+    color: $color-text-light;
+    transition: all $transition-speed ease;
+    line-height: 1;
+    padding: 5px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, rgba($color-primary, 0.1), rgba($color-primary, 0.05));
+    
+    .tarjeta-cobertura.active & {
+        color: white;
+        background: rgba(white, 0.2);
+        transform: scale(1.1);
+    }
 }
-
-.tarjeta-cobertura h4 {
-    margin-top: 0;
-    font-size: 0.9em;
-    color: #444;
-}
-
-/* ... (estilos anteriores) ... */
 
 .formulario-contacto {
     margin-top: 20px;
-    padding: 15px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+    padding: 25px;
+    background: linear-gradient(145deg, $color-background, darken($color-background, 2%));
+    border: 1px solid $color-border;
+    border-radius: $border-radius;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
-.formulario-contacto h3 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    color: #333;
-    font-size: 1.2em;
-    text-align: center;
-}
+    h3 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        color: $color-text;
+        font-size: 1.3em;
+        text-align: center;
+        font-weight: 600;
+    }
 
-.formulario-contacto div {
-    margin-bottom: 10px;
-}
+    div {
+        margin-bottom: 10px;
+    }
 
-.formulario-contacto label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
-}
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: $color-text-light;
+    }
 
-.formulario-contacto input[type="text"],
-.formulario-contacto input[type="tel"],
-.formulario-contacto input[type="email"],
-.formulario-contacto input[type="number"],
-.formulario-contacto select {
-    width: calc(100% - 12px);
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
-}
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    input[type="number"],
+    select {
+        @include form-input;
+    }
 
-.formulario-contacto button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-}
+    button {
+        background: linear-gradient(145deg, $color-primary, $color-primary-light);
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: 500;
+        transition: all $transition-speed ease;
+        margin-top: 15px;
 
-.formulario-contacto button:hover {
-    background-color: #0056b3;
-}
+        &:hover {
+            background: linear-gradient(145deg, darken($color-primary, 5%), darken($color-primary-light, 5%));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba($color-primary, 0.3), 0 2px 4px -1px rgba($color-primary, 0.2);
+        }
 
-.formulario-contacto button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba($color-primary, 0.3);
+        }
+
+        &:disabled {
+            background: linear-gradient(145deg, $color-text-light, darken($color-text-light, 5%));
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+    }
 }
 
 .error-message {
     display: block;
-    color: red;
+    color: $color-danger;
     font-size: 0.9em;
     margin-top: 3px;
 }
 
-/* Estilos del Modal */
+
 .modal {
-    display: none; /* Inicialmente oculto */
-    position: fixed; /* Para que se quede en su lugar al hacer scroll */
-    z-index: 1; /* Para que esté por encima de otros elementos */
+    display: none;
+    position: fixed; 
+    z-index: 1000; 
     left: 0;
     top: 0;
-    width: 100%; /* Ancho completo */
-    height: 100%; /* Alto completo */
-    overflow: auto; /* Habilitar scroll si el contenido es muy largo */
-    background-color: rgba(0,0,0,0.4); /* Fondo oscuro con transparencia */
+    width: 100%;
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4); 
 }
 
 .modal-contenido {
-    background-color: #fefefe;
-    margin: 15% auto; /* Centrar vertical y horizontalmente */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Ancho del contenido del modal */
-    border-radius: 8px;
+    background: linear-gradient(145deg, $color-background, darken($color-background, 2%));
+    margin: 15% auto;
+    padding: 30px;
+    border: 1px solid $color-border;
+    width: 80%;
+    border-radius: $border-radius;
     position: relative;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 .cerrar-modal {
@@ -255,4 +372,67 @@ h3 {
 
 .modal-botones button#editar-datos-btn:hover {
     background-color: #e0a800;
+}
+
+// Estilos del indicador de progreso
+.progress-indicator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px auto;
+    max-width: 800px;
+    position: relative;
+    padding: 20px 20px;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: $color-border;
+        z-index: 1;
+    }
+}
+
+.progress-step {
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(145deg, $color-background, darken($color-background, 2%));
+    border: 2px solid $color-border;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all $transition-speed ease;
+
+    .step-number {
+        font-weight: bold;
+        color: $color-text-light;
+    }
+
+    .step-label {
+        position: absolute;
+        top: 100%;
+        margin-top: 5px;
+        font-size: 0.8em;
+        color: $color-text-light;
+        white-space: nowrap;
+    }
+
+    &.active {
+        background: linear-gradient(145deg, $color-primary, $color-primary-light);
+        border-color: $color-primary;
+        box-shadow: 0 4px 6px -1px rgba($color-primary, 0.3), 0 2px 4px -1px rgba($color-primary, 0.2);
+    }
+
+    &.completed {
+        background: linear-gradient(145deg, $color-success, darken($color-success, 5%));
+        border-color: $color-success;
+        box-shadow: 0 4px 6px -1px rgba($color-success, 0.3), 0 2px 4px -1px rgba($color-success, 0.2);
+    }
 }

@@ -1,10 +1,12 @@
+import { validarCampo, validarFormularioCompleto } from '../modules/validations.js';
+import { guardarDatosLocalStorage, guardarDatosSessionStorage } from '../modules/storage.js';
+import { cargarFormularioOpcional, actualizarProgreso, mostrarModalResumen } from '../modules/ui.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const botonesSeguroPrincipal = document.querySelectorAll('.tarjeta-boton');
     const contenedorBotonesPrincipal = document.querySelector('.contenedor-botones');
     const contenedorFormularios = document.querySelector('.contenedor-formularios');
     const modalResumen = document.getElementById('modal-resumen');
-    const modalTitulo = document.getElementById('modal-titulo');
-    const modalDatos = document.getElementById('modal-datos');
     const cerrarModalBtn = modalResumen.querySelector('.cerrar-modal');
     const editarDatosBtn = modalResumen.querySelector('#editar-datos-btn');
     const enviarMailBtn = modalResumen.querySelector('#enviar-mail-btn');
@@ -17,37 +19,43 @@ document.addEventListener('DOMContentLoaded', () => {
     let datosContactoGuardados = '';
     let datosOpcionalesGuardados = '';
 
-    // Datos de las coberturas
+    // Inicializar el progreso en el paso 1
+    actualizarProgreso(1);
+
+    // Array Coberturas
     const coberturas = {
         inmuebles: [
-            { tipo: 'Casa', icono: '🏠' },
-            { tipo: 'Departamento', icono: '🏢' },
-            { tipo: 'Local Comercial', icono: '🏦' },
-            { tipo: 'Terreno', icono: '🏞️' }
+            { tipo: 'Domicilio Particular', icono: 'bi-house-door' },
+            { tipo: 'Departamento', icono: 'bi-building' },
+            { tipo: 'Comercios', icono: 'bi-shop' },
+            { tipo: 'Edificios', icono: 'bi-buildings' },
+            { tipo: 'Terrenos', icono: 'bi-tree' }
         ],
         vida: [
-            { tipo: 'Individual', icono: '👤' },
-            { tipo: 'Familiar', icono: '👨‍👩‍👧‍👦' },
-            { tipo: 'Con Ahorro', icono: '💰' },
-            { tipo: 'Temporario', icono: '⏱️' }
+            { tipo: 'Individual', icono: 'bi-person' },
+            { tipo: 'Familiar', icono: 'bi-people' },
+            { tipo: 'Con Ahorro', icono: 'bi-piggy-bank' },
+            { tipo: 'Temporario', icono: 'bi-clock' }
         ],
         automovil: [
-            { tipo: 'Autos 4 puertas', icono: '🚗' },
-            { tipo: 'Autos 5 puertas', icono: '🚘' },
-            { tipo: 'Motos', icono: '🛵' },
-            { tipo: 'Camionetas / SUVs', icono: '🛻' },
-            { tipo: 'Vehículos Comerciales', icono: '🚚' }
+            { tipo: 'Autos 4 puertas', icono: 'bi-car-front' },
+            { tipo: 'Autos 5 puertas', icono: 'bi-car-front-fill' },
+            { tipo: 'Motos', icono: 'bi-bicycle' },
+            { tipo: 'Camionetas / SUVs', icono: 'bi-truck' },
+            { tipo: 'Vehículos Comerciales', icono: 'bi-truck-flatbed' }
         ],
         salud: [
-            { tipo: 'Plan Básico', icono: '🩺' },
-            { tipo: 'Plan Medio', icono: '🏥' },
-            { tipo: 'Plan Premium', icono: '⚕️' },
-            { tipo: 'Dental', icono: '🦷' }
+            { tipo: 'Plan Básico', icono: 'bi-hospital' },
+            { tipo: 'Plan Medio', icono: 'bi-hospital-fill' },
+            { tipo: 'Plan Premium', icono: 'bi-hospital-alt' },
+            { tipo: 'Dental', icono: 'bi-tooth' }
         ]
     };
 
     function mostrarCoberturas(tipoSeguro) {
         tipoSeguroSeleccionado = tipoSeguro;
+        actualizarProgreso(2);
+
         if (contenedorCoberturasActivo) {
             contenedorCoberturasActivo.remove();
             contenedorCoberturasActivo = '';
@@ -63,8 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 tarjetaCobertura.dataset.cobertura = cobertura.tipo;
 
                 const iconoCobertura = document.createElement('i');
-                iconoCobertura.classList.add('icono-cobertura');
-                iconoCobertura.textContent = cobertura.icono;
+                iconoCobertura.classList.add('bi', cobertura.icono, 'icono-cobertura');
 
                 const tituloCobertura = document.createElement('h4');
                 tituloCobertura.textContent = cobertura.tipo;
@@ -90,34 +97,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function mostrarFormularioContacto(tipoSeguro, cobertura) {
+        actualizarProgreso(3);
         const formularioContacto = document.createElement('form');
         formularioContacto.classList.add('formulario-contacto');
+        formularioContacto.setAttribute('role', 'form');
+        formularioContacto.setAttribute('aria-label', `Formulario de contacto para ${tipoSeguro} - ${cobertura}`);
 
         formularioContacto.innerHTML = `
-            <h3>Ingrese sus datos de contacto para ${tipoSeguro} - ${cobertura}</h3>
+            <h3>Usted solicitará asesoramiento para ${tipoSeguro.toUpperCase()} > ${cobertura.toUpperCase()}</h3>
             <div>
                 <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" required>
-                <span class="error-message" id="nombre-error"></span>
+                <input type="text" id="nombre" name="nombre" required aria-required="true">
+                <span class="error-message" id="nombre-error" role="alert"></span>
             </div>
             <div>
                 <label for="apellido">Apellido:</label>
-                <input type="text" id="apellido" name="apellido" required>
-                <span class="error-message" id="apellido-error"></span>
+                <input type="text" id="apellido" name="apellido" required aria-required="true">
+                <span class="error-message" id="apellido-error" role="alert"></span>
             </div>
             <div>
                 <label for="telefono">Teléfono:</label>
-                <input type="tel" id="telefono" name="telefono" required>
-                <span class="error-message" id="telefono-error"></span>
+                <input type="tel" id="telefono" name="telefono" required aria-required="true">
+                <span class="error-message" id="telefono-error" role="alert"></span>
             </div>
             <div>
                 <label for="email">Email (opcional):</label>
-                <input type="email" id="email" name="email">
+                <input type="email" id="email" name="email" aria-required="false">
+                <span class="error-message" id="email-error" role="alert"></span>
             </div>
-            <button type="button" id="cargar-mas-info-btn">Quiero cargar más información</button>
-            <div id="formulario-opcional-container" style="display: none;">
-                </div>
-            <button type="button" id="confirmar-datos-btn" disabled>Confirmar</button>
+            <button type="button" id="cargar-mas-info-btn" aria-expanded="false">Quiero cargar más información</button>
+            <div id="formulario-opcional-container" style="display: none;" aria-hidden="true">
+            </div>
+            <button type="button" id="confirmar-datos-btn" disabled aria-disabled="true">Confirmar</button>
         `;
 
         contenedorFormularios.appendChild(formularioContacto);
@@ -125,151 +136,68 @@ document.addEventListener('DOMContentLoaded', () => {
         const cargarMasInfoBtn = formularioContacto.querySelector('#cargar-mas-info-btn');
         const formularioOpcionalContainer = formularioContacto.querySelector('#formulario-opcional-container');
         const confirmarDatosBtn = formularioContacto.querySelector('#confirmar-datos-btn');
-        const nombreInput = formularioContacto.querySelector('#nombre');
-        const apellidoInput = formularioContacto.querySelector('#apellido');
-        const telefonoInput = formularioContacto.querySelector('#telefono');
-        const emailInput = formularioContacto.querySelector('#email');
+
+        formularioContacto.addEventListener('input', (e) => {
+            if (e.target.matches('input') && e.target.closest('.formulario-contacto')) {
+                const errorSpan = formularioContacto.querySelector(`#${e.target.id}-error`);
+                if (errorSpan) {
+                    validarCampo(e.target, errorSpan);
+                    actualizarEstadoBotonConfirmar();
+                }
+            }
+        });
+
+        formularioContacto.addEventListener('blur', (e) => {
+            if (e.target.matches('input') && e.target.closest('.formulario-contacto')) {
+                const errorSpan = formularioContacto.querySelector(`#${e.target.id}-error`);
+                if (errorSpan) {
+                    validarCampo(e.target, errorSpan);
+                    actualizarEstadoBotonConfirmar();
+                }
+            }
+        }, true);
 
         cargarMasInfoBtn.addEventListener('click', () => {
-            formularioOpcionalContainer.style.display = 'block';
-            cargarFormularioOpcional(tipoSeguro, cobertura, formularioOpcionalContainer);
-        });
-
-        function validarCampo(input, errorSpan) {
-            if (input.value.trim() === '') {
-                errorSpan.textContent = 'Este campo es requerido.';
-                return false;
-            } else {
-                errorSpan.textContent = '';
-                return true;
+            const isExpanded = cargarMasInfoBtn.getAttribute('aria-expanded') === 'true';
+            cargarMasInfoBtn.setAttribute('aria-expanded', !isExpanded);
+            formularioOpcionalContainer.style.display = isExpanded ? 'none' : 'block';
+            formularioOpcionalContainer.setAttribute('aria-hidden', isExpanded);
+            if (!isExpanded) {
+                cargarFormularioOpcional(tipoSeguro, formularioOpcionalContainer);
             }
-        }
-
-        nombreInput.addEventListener('input', () => validarCampo(nombreInput, formularioContacto.querySelector('#nombre-error')));
-        apellidoInput.addEventListener('input', () => validarCampo(apellidoInput, formularioContacto.querySelector('#apellido-error')));
-        telefonoInput.addEventListener('input', () => {
-            // Aquí podrías agregar una validación más robusta para el teléfono si lo deseas
-            validarCampo(telefonoInput, formularioContacto.querySelector('#telefono-error'));
         });
 
-        function verificarFormularioContacto() {
-            const nombreValido = validarCampo(nombreInput, formularioContacto.querySelector('#nombre-error'));
-            const apellidoValido = validarCampo(apellidoInput, formularioContacto.querySelector('#apellido-error'));
-            const telefonoValido = validarCampo(telefonoInput, formularioContacto.querySelector('#telefono-error'));
-
-            confirmarDatosBtn.disabled = !(nombreValido && apellidoValido && telefonoValido);
+        function actualizarEstadoBotonConfirmar() {
+            confirmarDatosBtn.disabled = !validarFormularioCompleto(formularioContacto);
+            confirmarDatosBtn.classList.toggle('disabled', confirmarDatosBtn.disabled);
         }
 
-        nombreInput.addEventListener('blur', verificarFormularioContacto);
-        apellidoInput.addEventListener('blur', verificarFormularioContacto);
-        telefonoInput.addEventListener('blur', verificarFormularioContacto);
+        actualizarEstadoBotonConfirmar();
 
         confirmarDatosBtn.addEventListener('click', () => {
             if (!confirmarDatosBtn.disabled) {
                 const datosContacto = {
-                    nombre: nombreInput.value,
-                    apellido: apellidoInput.value,
-                    telefono: telefonoInput.value,
-                    email: emailInput.value
+                    nombre: formularioContacto.querySelector('#nombre').value,
+                    apellido: formularioContacto.querySelector('#apellido').value,
+                    telefono: formularioContacto.querySelector('#telefono').value,
+                    email: formularioContacto.querySelector('#email').value
                 };
                 const datosOpcionales = obtenerDatosFormularioOpcional(formularioOpcionalContainer);
-                datosContactoGuardados = { ...datosContacto }; // Guardar para el modal
-                datosOpcionalesGuardados = { ...datosOpcionales }; // Guardar para el modal
+                datosContactoGuardados = { ...datosContacto };
+                datosOpcionalesGuardados = { ...datosOpcionales };
                 guardarDatosLocalStorage(tipoSeguro, cobertura, datosContacto);
                 guardarDatosSessionStorage(tipoSeguro, cobertura, datosOpcionales);
                 mostrarModalResumen(tipoSeguro, cobertura, datosContacto, datosOpcionales);
             } else {
-                alert('Por favor, complete los campos requeridos.');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Campos requeridos',
+                    text: 'Por favor, complete los campos requeridos.',
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#007bff'
+                });
             }
         });
-    }
-
-    function cargarFormularioOpcional(tipoSeguro, cobertura, container) {
-        container.innerHTML = '';
-        const botonOcultar = document.createElement('button');
-        botonOcultar.textContent = 'Ocultar información adicional';
-        botonOcultar.type = 'button';
-        botonOcultar.addEventListener('click', () => {
-            container.style.display = 'none';
-            container.innerHTML = ''; // Limpiar el contenido al ocultar
-            const formularioContacto = document.querySelector('.formulario-contacto');
-            if (formularioContacto) {
-                formularioContacto.querySelector('#confirmar-datos-btn').disabled = false; // Habilitar el botón al ocultar
-            }
-        });
-
-        let formularioOpcionalHTML = '';
-
-        switch (tipoSeguro) {
-            case 'inmuebles':
-                formularioOpcionalHTML += `
-                    <h4>Información del Inmueble (Opcional)</h4>
-                    <div>
-                        <label for="direccion">Dirección:</label>
-                        <input type="text" id="direccion" name="direccion">
-                    </div>
-                    <div>
-                        <label for="tipo-inmueble">Tipo:</label>
-                        <select id="tipo-inmueble" name="tipo-inmueble">
-                            <option value="">Seleccionar</option>
-                            <option value="casa">Casa</option>
-                            <option value="departamento">Departamento</option>
-                            <option value="local">Local Comercial</option>
-                            <option value="terreno">Terreno</option>
-                        </select>
-                    </div>
-                `;
-                break;
-            case 'automovil':
-                formularioOpcionalHTML += `
-                    <h4>Información del Vehículo (Opcional)</h4>
-                    <div>
-                        <label for="marca">Marca:</label>
-                        <input type="text" id="marca" name="marca">
-                    </div>
-                    <div>
-                        <label for="modelo">Modelo:</label>
-                        <input type="text" id="modelo" name="modelo">
-                    </div>
-                    <div>
-                        <label for="anio">Año:</label>
-                        <input type="number" id="anio" name="anio">
-                    </div>
-                `;
-                break;
-            case 'vida':
-                formularioOpcionalHTML += `
-                    <h4>Información Adicional (Opcional)</h4>
-                    <div>
-                        <label for="edad-titular">Edad del Titular:</label>
-                        <input type="number" id="edad-titular" name="edad-titular">
-                    </div>
-                    <div>
-                        <label for="beneficiarios">Beneficiarios:</label>
-                        <input type="text" id="beneficiarios" name="beneficiarios">
-                    </div>
-                `;
-                break;
-            case 'salud':
-                formularioOpcionalHTML += `
-                    <h4>Información Adicional (Opcional)</h4>
-                    <div>
-                        <label for="tiene-preexistencias">¿Tiene preexistencias?</label>
-                        <select id="tiene-preexistencias" name="tiene-preexistencias">
-                            <option value="">Seleccionar</option>
-                            <option value="si">Sí</option>
-                            <option value="no">No</option>
-                        </select>
-                    </div>
-                `;
-                break;
-            default:
-                formularioOpcionalHTML += '<p>No hay información adicional para cargar.</p>';
-                break;
-        }
-
-        container.innerHTML = formularioOpcionalHTML;
-        container.appendChild(botonOcultar); // Añadir el botón de ocultar al final
     }
 
     function obtenerDatosFormularioOpcional(container) {
@@ -279,42 +207,6 @@ document.addEventListener('DOMContentLoaded', () => {
             datos[input.name] = input.value;
         });
         return datos;
-    }
-
-    function guardarDatosLocalStorage(tipoSeguro, cobertura, datosContacto) {
-        const keyContacto = `contacto_${tipoSeguro}_${cobertura}`;
-        localStorage.setItem(keyContacto, JSON.stringify(datosContacto));
-        console.log('Datos de contacto guardados en Local Storage:', datosContacto);
-    }
-
-    function guardarDatosSessionStorage(tipoSeguro, cobertura, datosOpcionales) {
-        const keyOpcional = `opcional_${tipoSeguro}_${cobertura}`;
-        sessionStorage.setItem(keyOpcional, JSON.stringify(datosOpcionales));
-        console.log('Datos opcionales guardados en Session Storage:', datosOpcionales);
-    }
-
-    function mostrarModalResumen(tipoSeguro, cobertura, datosContacto, datosOpcionales) {
-        modalTitulo.textContent = `${tipoSeguro} (${new Date().toLocaleString()})`;
-        modalDatos.innerHTML = ''; // Limpiar el contenido previo
-
-        const agregarDatoAlResumen = (label, value) => {
-            if (value) {
-                const listItem = document.createElement('li');
-                listItem.textContent = `${label}: ${value}`;
-                modalDatos.appendChild(listItem);
-            }
-        };
-
-        agregarDatoAlResumen('Nombre', datosContacto.nombre);
-        agregarDatoAlResumen('Apellido', datosContacto.apellido);
-        agregarDatoAlResumen('Teléfono', datosContacto.telefono);
-        agregarDatoAlResumen('Email', datosContacto.email);
-
-        for (const key in datosOpcionales) {
-            agregarDatoAlResumen(key.charAt(0).toUpperCase() + key.slice(1).replace('-', ' '), datosOpcionales[key]);
-        }
-
-        modalResumen.style.display = 'block';
     }
 
     // Eventos para cerrar el modal
@@ -343,11 +235,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const formularioOpcionalContainer = formularioContacto.querySelector('#formulario-opcional-container');
             if (formularioOpcionalContainer && datosOpcionalesGuardados && Object.keys(datosOpcionalesGuardados).length > 0) {
                 formularioOpcionalContainer.style.display = 'block';
-                cargarFormularioOpcional(tipoSeguroSeleccionado, coberturaSeleccionada, formularioOpcionalContainer, datosOpcionalesGuardados);
+                cargarFormularioOpcional(tipoSeguroSeleccionado, formularioOpcionalContainer);
             } else if (formularioOpcionalContainer) {
                 formularioOpcionalContainer.style.display = 'none';
             }
-            formularioContacto.querySelector('#confirmar-datos-btn').disabled = false; // Re-habilitar el botón
+            formularioContacto.querySelector('#confirmar-datos-btn').disabled = false;
         }
     });
 
@@ -374,11 +266,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const mailtoUrl = `mailto:?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
         window.open(mailtoUrl);
-        alert('Se abrirá su cliente de correo electrónico con el resumen de la solicitud.');
+        
+        Swal.fire({
+            icon: 'success',
+            title: 'Email enviado',
+            text: 'Se ha abierto su cliente de correo electrónico con el resumen de la solicitud.',
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#007bff'
+        });
     });
 
     enviarWhatsappBtn.addEventListener('click', () => {
-        const numeroTelefonoEjemplo = '5491169732701'; // Reemplaza con un número real (con código de país y sin el '+')
+        const numeroTelefonoEjemplo = '5491169732701';
         const mensaje = `Resumen de mi solicitud de seguro:\n\n` +
             `Tipo de Seguro: ${tipoSeguroSeleccionado}\n` +
             `Cobertura: ${coberturaSeleccionada}\n` +
@@ -395,31 +294,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const whatsappUrl = `https://wa.me/${numeroTelefonoEjemplo}?text=${encodeURIComponent(mensaje)}`;
         window.open(whatsappUrl);
+        
+        Swal.fire({
+            icon: 'success',
+            title: 'WhatsApp abierto',
+            text: 'Se ha abierto WhatsApp con el resumen de su solicitud.',
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#007bff'
+        });
     });
 
     cancelarOperacionBtn.addEventListener('click', () => {
-        modalResumen.style.display = 'none';
-        contenedorFormularios.innerHTML = '';
-        if (tarjetaPrincipalActiva) {
-            tarjetaPrincipalActiva.classList.remove('active');
-            tarjetaPrincipalActiva = null;
-        }
-        if (contenedorCoberturasActivo) {
-            contenedorCoberturasActivo.remove();
-            contenedorCoberturasActivo = null;
-        }
-        tipoSeguroSeleccionado = null;
-        coberturaSeleccionada = null;
-        datosContactoGuardados = null;
-        datosOpcionalesGuardados = null;
+        Swal.fire({
+            title: '¿Está seguro?',
+            text: "Esta acción cancelará la operación actual y reiniciará el proceso",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Sí, cancelar',
+            cancelButtonText: 'No, continuar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                modalResumen.style.display = 'none';
+                contenedorFormularios.innerHTML = '';
+                if (tarjetaPrincipalActiva) {
+                    tarjetaPrincipalActiva.classList.remove('active');
+                    tarjetaPrincipalActiva = null;
+                }
+                if (contenedorCoberturasActivo) {
+                    contenedorCoberturasActivo.remove();
+                    contenedorCoberturasActivo = null;
+                }
+                tipoSeguroSeleccionado = null;
+                coberturaSeleccionada = null;
+                datosContactoGuardados = null;
+                datosOpcionalesGuardados = null;
 
-        // Opcional: Puedes limpiar también el LocalStorage y SessionStorage si deseas un reinicio completo
-        // localStorage.removeItem(`contacto_${tipoSeguroSeleccionado}_${coberturaSeleccionada}`);
-        // sessionStorage.removeItem(`opcional_${tipoSeguroSeleccionado}_${coberturaSeleccionada}`);
-
-        console.log('Operación cancelada y ciclo reiniciado.');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Operación cancelada',
+                    text: 'El proceso ha sido reiniciado correctamente',
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#007bff'
+                });
+            }
+        });
     });
-
 
     botonesSeguroPrincipal.forEach(boton => {
         boton.addEventListener('click', () => {
