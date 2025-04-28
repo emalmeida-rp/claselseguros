@@ -1,0 +1,36 @@
+// Mixins centralizados
+@mixin card-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all $transition-speed ease;
+}
+
+@mixin card-hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+@mixin form-input {
+    width: calc(100% - 12px);
+    padding: 10px 12px;
+    border: 2px solid $color-border;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: all $transition-speed ease;
+    background-color: $color-background;
+
+    &:focus {
+        outline: none;
+        border-color: $color-primary;
+        box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+    }
+
+    &.error {
+        border-color: $color-danger;
+        box-shadow: 0 0 0 3px rgba($color-danger, 0.1);
+    }
+
+    &.success {
+        border-color: $color-success;
+        box-shadow: 0 0 0 3px rgba($color-success, 0.1);
+    }
+} 

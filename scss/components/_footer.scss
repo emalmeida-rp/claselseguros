@@ -1,0 +1,218 @@
+@use "sass:color";
+@use "../_variables.scss" as *;
+@use "../_mixins.scss" as *;
+
+footer {
+    background-color: $color-background;
+    color: $color-text;
+    padding: $container-padding 0;
+    margin-top: 3rem;
+    width: 100%;
+    box-sizing: border-box;
+
+    .footer-container {
+        max-width: $container-max-width;
+        margin: 0 auto;
+        padding: 0 $container-padding;
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        box-sizing: border-box;
+    }
+
+    .footer-lists {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+
+    .footer-list {
+        h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: $color-text;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            li {
+                margin-bottom: 0.8rem;
+
+                a {
+                    color: rgba($color-text, 0.8);
+                    text-decoration: none;
+                    transition: color $transition-speed ease;
+
+                    &:hover {
+                        color: $color-text;
+                    }
+                }
+            }
+        }
+    }
+
+    .footer-location {
+        h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: $color-text;
+        }
+
+        .location-format {
+            p {
+                margin: 0.5rem 0;
+                font-weight: 600;
+            }
+
+            span {
+                display: block;
+                margin-bottom: 1rem;
+                color: rgba($color-text, 0.8);
+            }
+
+            button {
+                background-color: transparent;
+                border: 1px solid $color-text;
+                color: $color-text;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: all $transition-speed ease;
+
+                &:hover {
+                    background-color: rgba($color-text, 0.1);
+                }
+            }
+        }
+    }
+
+    .footer-copyright {
+        text-align: center;
+        padding-top: 2rem;
+        margin-top: 2rem;
+        border-top: 1px solid $color-border;
+        color: rgba($color-text, 0.6);
+        font-size: 0.9rem;
+    }
+}
+
+// Media Queries
+@media (max-width: 992px) {
+    footer {
+        .footer-container {
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+
+        .footer-lists {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    footer {
+        padding: 1.5rem 0;
+
+        .footer-container {
+            padding: 0 1.5rem;
+        }
+
+        .footer-lists {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .footer-list {
+            h3 {
+                font-size: 1.1rem;
+                margin-bottom: 1.2rem;
+            }
+        }
+
+        .footer-location {
+            h3 {
+                font-size: 1.1rem;
+                margin-bottom: 1.2rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    footer {
+        padding: 1rem 0;
+
+        .footer-container {
+            padding: 0 1rem;
+            gap: 2rem;
+        }
+
+        .footer-list {
+            h3 {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            ul li {
+                margin-bottom: 0.6rem;
+            }
+        }
+
+        .footer-location {
+            h3 {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .location-format {
+                button {
+                    width: 100%;
+                    padding: 0.6rem;
+                }
+            }
+        }
+
+        .footer-copyright {
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+        }
+    }
+}
+
+@media (max-width: 320px) {
+    footer {
+        padding: 0.8rem 0;
+
+        .footer-container {
+            padding: 0 0.8rem;
+            gap: 1.5rem;
+        }
+
+        .footer-list {
+            h3 {
+                font-size: 0.9rem;
+            }
+
+            ul li {
+                font-size: 0.9rem;
+            }
+        }
+
+        .footer-location {
+            h3 {
+                font-size: 0.9rem;
+            }
+
+            .location-format {
+                p, span {
+                    font-size: 0.9rem;
+                }
+            }
+        }
+    }
+} 

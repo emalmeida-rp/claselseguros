@@ -1,13 +1,6 @@
 @use "sass:color";
-
-// Variables
-$color-primary: #2563eb;
-$color-primary-light: #3b82f6;
-$color-success: #10b981;
-$color-text-light: #6b7280;
-$color-border: #e5e7eb;
-$color-background: #ffffff;
-$transition-speed: 0.2s;
+@use "../_variables.scss" as *;
+@use "../_mixins.scss" as *;
 
 // Estilos del indicador de progreso
 .progress-indicator {

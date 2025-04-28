@@ -1,9 +1,13 @@
 @use "sass:color";
+@use "../_variables.scss" as *;
+@use "../_mixins.scss" as *;
 
 // Variables
 $color-background: #ffffff;
 $color-border: #e5e7eb;
 $transition-speed: 0.2s;
+$container-padding: 1rem;
+$container-max-width: 1200px;
 
 // Mixins
 @mixin card-shadow {
@@ -18,22 +22,25 @@ $transition-speed: 0.2s;
 
 .logos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    max-width: 1200px;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
     margin: 0 auto;
 
     .logo-card {
         background: linear-gradient(145deg, $color-background, color.scale($color-background, $lightness: -2%));
         border: 1px solid $color-border;
         border-radius: 12px;
-        padding: 15px;
+        padding: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
         transition: all $transition-speed ease;
         @include card-shadow;
+        aspect-ratio: 1;
+        min-height: 80px;
 
         &:hover {
             @include card-hover;
@@ -42,8 +49,9 @@ $transition-speed: 0.2s;
 
         img {
             max-width: 100%;
+            max-height: 100%;
+            width: auto;
             height: auto;
-            max-height: 80px;
             object-fit: contain;
             filter: grayscale(100%);
             transition: all $transition-speed ease;
@@ -57,32 +65,41 @@ $transition-speed: 0.2s;
 
 @media (max-width: 768px) {
     .logos-grid {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 15px;
-        padding: 15px;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 12px;
+        padding: 12px;
 
         .logo-card {
-            padding: 10px;
-
-            img {
-                max-height: 60px;
-            }
+            padding: 8px;
+            min-height: 70px;
         }
     }
 }
 
 @media (max-width: 480px) {
     .logos-grid {
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-        gap: 10px;
-        padding: 10px;
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 8px;
+        padding: 8px;
 
         .logo-card {
-            padding: 8px;
+            padding: 6px;
+            min-height: 60px;
+            border-radius: 8px;
+        }
+    }
+}
 
-            img {
-                max-height: 50px;
-            }
+@media (max-width: 320px) {
+    .logos-grid {
+        grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+        gap: 6px;
+        padding: 6px;
+
+        .logo-card {
+            padding: 4px;
+            min-height: 50px;
+            border-radius: 6px;
         }
     }
 } 

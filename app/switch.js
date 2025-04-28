@@ -61,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const storedTheme = localStorage.getItem('theme');
     const storedLanguage = localStorage.getItem('language');
 
-    // Función para aplicar el tema
     function setTheme(theme) {
         if (theme === 'dark') {
             body.classList.add('dark-theme');
@@ -73,34 +72,34 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('theme', theme);
     }
 
-    // Función para aplicar el lenguaje
+    
     function setLanguage(lang) {
-        htmlElement.lang = lang; // Establecer el atributo lang del html
+        htmlElement.lang = lang;
         localStorage.setItem('language', lang);
     }
 
-    // Establecer el tema guardado al cargar la página
+    
     if (storedTheme) {
         setTheme(storedTheme);
     } else {
-        setTheme('light'); // Establecer tema claro por defecto
+        setTheme('light'); 
     }
 
-    // Establecer el lenguaje guardado al cargar la página
+   
     if (storedLanguage) {
         languageSelect.value = storedLanguage;
-        setLanguage(storedLanguage); // Aplicar el lenguaje guardado
+        setLanguage(storedLanguage); 
     } else {
-        setLanguage('es'); // Establecer idioma español por defecto
+        setLanguage('es'); 
     }
 
-    // Evento para cambiar el tema
+ 
     themeToggle.addEventListener('change', function() {
         const newTheme = this.checked ? 'dark' : 'light';
         setTheme(newTheme);
     });
 
-    // Evento para cambiar el lenguaje
+  
     languageSelect.addEventListener('change', function() {
         const selectedLanguage = this.value;
         setLanguage(selectedLanguage);
