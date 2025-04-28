@@ -1,0 +1,87 @@
+@use "sass:color";
+
+// Variables
+$color-primary: #2563eb;
+$color-primary-light: #3b82f6;
+$color-success: #10b981;
+$color-text-light: #6b7280;
+$color-border: #e5e7eb;
+$color-background: #ffffff;
+$transition-speed: 0.2s;
+
+// Estilos del indicador de progreso
+.progress-indicator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px auto;
+    max-width: 800px;
+    position: relative;
+    padding: 20px 20px;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: $color-border;
+        z-index: 1;
+    }
+}
+
+.progress-step {
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(145deg, $color-background, color.scale($color-background, $lightness: -2%));
+    border: 2px solid $color-border;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all $transition-speed ease;
+
+    .step-number {
+        font-weight: bold;
+        color: $color-text-light;
+        transition: all $transition-speed ease;
+    }
+
+    .step-label {
+        position: absolute;
+        top: 100%;
+        margin-top: 5px;
+        font-size: 0.8em;
+        color: $color-text-light;
+        white-space: nowrap;
+        transition: all $transition-speed ease;
+    }
+
+    &.active {
+        background: linear-gradient(145deg, $color-primary, $color-primary-light);
+        border-color: $color-primary;
+        box-shadow: 0 4px 6px -1px rgba($color-primary, 0.3), 0 2px 4px -1px rgba($color-primary, 0.2);
+        
+        .step-number,
+        .step-label {
+            color: white;
+            transform: scale(1.05);
+        }
+    }
+
+    &.completed {
+        background: linear-gradient(145deg, $color-success, color.scale($color-success, $lightness: -5%));
+        border-color: $color-success;
+        box-shadow: 0 4px 6px -1px rgba($color-success, 0.3), 0 2px 4px -1px rgba($color-success, 0.2);
+        
+        .step-number,
+        .step-label {
+            color: white;
+            transform: scale(1.05);
+        }
+    }
+} 
