@@ -209,7 +209,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return datos;
     }
 
-    // Eventos para cerrar el modal
     cerrarModalBtn.addEventListener('click', () => {
         modalResumen.style.display = 'none';
     });
@@ -222,24 +221,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     editarDatosBtn.addEventListener('click', () => {
         modalResumen.style.display = 'none';
-        contenedorFormularios.innerHTML = '';
-        mostrarFormularioContacto(tipoSeguroSeleccionado, coberturaSeleccionada);
-    
-        const formularioContacto = contenedorFormularios.querySelector('.formulario-contacto');
-        if (formularioContacto) {
-            formularioContacto.querySelector('#nombre').value = datosContactoGuardados?.nombre || '';
-            formularioContacto.querySelector('#apellido').value = datosContactoGuardados?.apellido || '';
-            formularioContacto.querySelector('#telefono').value = datosContactoGuardados?.telefono || '';
-            formularioContacto.querySelector('#email').value = datosContactoGuardados?.email || '';
-            const formularioOpcionalContainer = formularioContacto.querySelector('#formulario-opcional-container');
-            if (formularioOpcionalContainer && datosOpcionalesGuardados && Object.keys(datosOpcionalesGuardados).length > 0) {
-                formularioOpcionalContainer.style.display = 'block';
-                cargarFormularioOpcional(tipoSeguroSeleccionado, formularioOpcionalContainer);
-            } else if (formularioOpcionalContainer) {
-                formularioOpcionalContainer.style.display = 'none';
-            }
-            formularioContacto.querySelector('#confirmar-datos-btn').disabled = false;
-        }
     });
 
     enviarMailBtn.addEventListener('click', () => {
@@ -272,6 +253,22 @@ document.addEventListener('DOMContentLoaded', () => {
             text: 'Se ha abierto su cliente de correo electrónico con el resumen de la solicitud.',
             confirmButtonText: 'Entendido',
             confirmButtonColor: '#007bff'
+        }).then(() => {
+            // Limpiar datos y cerrar modal
+            modalResumen.style.display = 'none';
+            contenedorFormularios.innerHTML = '';
+            if (tarjetaPrincipalActiva) {
+                tarjetaPrincipalActiva.classList.remove('active');
+                tarjetaPrincipalActiva = '';
+            }
+            if (contenedorCoberturasActivo) {
+                contenedorCoberturasActivo.remove();
+                contenedorCoberturasActivo = '';
+            }
+            tipoSeguroSeleccionado = '';
+            coberturaSeleccionada = '';
+            datosContactoGuardados = '';
+            datosOpcionalesGuardados = '';
         });
     });
 
@@ -300,6 +297,22 @@ document.addEventListener('DOMContentLoaded', () => {
             text: 'Se ha iniciado el chat por WhatsApp con el resumen de la solicitud.',
             confirmButtonText: 'Entendido',
             confirmButtonColor: '#007bff'
+        }).then(() => {
+            // Limpiar datos y cerrar modal
+            modalResumen.style.display = 'none';
+            contenedorFormularios.innerHTML = '';
+            if (tarjetaPrincipalActiva) {
+                tarjetaPrincipalActiva.classList.remove('active');
+                tarjetaPrincipalActiva = '';
+            }
+            if (contenedorCoberturasActivo) {
+                contenedorCoberturasActivo.remove();
+                contenedorCoberturasActivo = '';
+            }
+            tipoSeguroSeleccionado = '';
+            coberturaSeleccionada = '';
+            datosContactoGuardados = '';
+            datosOpcionalesGuardados = '';
         });
     });
 
