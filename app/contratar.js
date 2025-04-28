@@ -19,12 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let datosContactoGuardados = '';
     let datosOpcionalesGuardados = '';
 
-    // Inicializar el progreso en el paso 1
     actualizarProgreso(1);
 
     // Array Coberturas
     const coberturas = {
-        inmuebles: [
+        'bienes personales': [
             { tipo: 'Domicilio Particular', icono: 'bi-house-door' },
             { tipo: 'Departamento', icono: 'bi-building' },
             { tipo: 'Comercios', icono: 'bi-shop' },
@@ -44,11 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
             { tipo: 'Camionetas / SUVs', icono: 'bi-truck' },
             { tipo: 'Vehículos Comerciales', icono: 'bi-truck-flatbed' }
         ],
-        salud: [
+        ART: [
             { tipo: 'Plan Básico', icono: 'bi-hospital' },
             { tipo: 'Plan Medio', icono: 'bi-hospital-fill' },
-            { tipo: 'Plan Premium', icono: 'bi-hospital-alt' },
-            { tipo: 'Dental', icono: 'bi-tooth' }
+            { tipo: 'Plan Premium', icono: 'bi-file-medical' },
+            { tipo: 'Dental', icono: 'bi-bandaid' }
         ]
     };
 
@@ -175,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
         actualizarEstadoBotonConfirmar();
 
         confirmarDatosBtn.addEventListener('click', () => {
+            actualizarProgreso(4);
             if (!confirmarDatosBtn.disabled) {
                 const datosContacto = {
                     nombre: formularioContacto.querySelector('#nombre').value,
@@ -224,14 +224,13 @@ document.addEventListener('DOMContentLoaded', () => {
         modalResumen.style.display = 'none';
         contenedorFormularios.innerHTML = '';
         mostrarFormularioContacto(tipoSeguroSeleccionado, coberturaSeleccionada);
-        // Re-llenar los campos con los datos guardados
+    
         const formularioContacto = contenedorFormularios.querySelector('.formulario-contacto');
         if (formularioContacto) {
             formularioContacto.querySelector('#nombre').value = datosContactoGuardados?.nombre || '';
             formularioContacto.querySelector('#apellido').value = datosContactoGuardados?.apellido || '';
             formularioContacto.querySelector('#telefono').value = datosContactoGuardados?.telefono || '';
             formularioContacto.querySelector('#email').value = datosContactoGuardados?.email || '';
-
             const formularioOpcionalContainer = formularioContacto.querySelector('#formulario-opcional-container');
             if (formularioOpcionalContainer && datosOpcionalesGuardados && Object.keys(datosOpcionalesGuardados).length > 0) {
                 formularioOpcionalContainer.style.display = 'block';
@@ -245,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     enviarMailBtn.addEventListener('click', () => {
         const asunto = `Resumen de Solicitud de Seguro - ${tipoSeguroSeleccionado} - ${coberturaSeleccionada} (${new Date().toLocaleString()})`;
-        let cuerpo = `Resumen de su solicitud de seguro:\n\n`;
+        let cuerpo = `Resumen de solicitud de cobertura:\n\n`;
         cuerpo += `Tipo de Seguro: ${tipoSeguroSeleccionado}\n`;
         cuerpo += `Cobertura: ${coberturaSeleccionada}\n`;
         cuerpo += `Fecha y Hora: ${new Date().toLocaleString()}\n\n`;
@@ -297,8 +296,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         Swal.fire({
             icon: 'success',
-            title: 'WhatsApp abierto',
-            text: 'Se ha abierto WhatsApp con el resumen de su solicitud.',
+            title: 'Enviar datos por Whatsapp',
+            text: 'Se ha iniciado el chat por WhatsApp con el resumen de la solicitud.',
             confirmButtonText: 'Entendido',
             confirmButtonColor: '#007bff'
         });
@@ -306,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     cancelarOperacionBtn.addEventListener('click', () => {
         Swal.fire({
-            title: '¿Está seguro?',
+            title: 'Reiniciar y eliminar datos ¿Está seguro?',
             text: "Esta acción cancelará la operación actual y reiniciará el proceso",
             icon: 'warning',
             showCancelButton: true,
@@ -320,16 +319,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 contenedorFormularios.innerHTML = '';
                 if (tarjetaPrincipalActiva) {
                     tarjetaPrincipalActiva.classList.remove('active');
-                    tarjetaPrincipalActiva = null;
+                    tarjetaPrincipalActiva = '';
                 }
                 if (contenedorCoberturasActivo) {
                     contenedorCoberturasActivo.remove();
-                    contenedorCoberturasActivo = null;
+                    contenedorCoberturasActivo = '';
                 }
-                tipoSeguroSeleccionado = null;
-                coberturaSeleccionada = null;
-                datosContactoGuardados = null;
-                datosOpcionalesGuardados = null;
+                tipoSeguroSeleccionado = '';
+                coberturaSeleccionada = '';
+                datosContactoGuardados = '';
+                datosOpcionalesGuardados = '';
 
                 Swal.fire({
                     icon: 'success',

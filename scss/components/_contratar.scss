@@ -70,7 +70,7 @@ $transition-speed: 0.2s;
 }
 
 .tarjeta-boton {
-    background: linear-gradient(145deg, $color-background, darken($color-background, 2%));
+    background: linear-gradient(145deg, $color-background, color.scale($color-background, $lightness: -2%));
     border: 1px solid $color-border;
     border-radius: $border-radius;
     padding: 20px;
@@ -87,19 +87,31 @@ $transition-speed: 0.2s;
         transition: all $transition-speed ease;
     }
 
+    p.descripcion {
+        margin-top: 8px;
+        font-size: 0.9em;
+        color: $color-text-light;
+        transition: all $transition-speed ease;
+    }
+
     &:hover,
     &:focus {
         @include card-hover;
-        background: linear-gradient(145deg, darken($color-background, 1%), darken($color-background, 3%));
+        background: linear-gradient(145deg, color.scale($color-background, $lightness: -1%), color.scale($color-background, $lightness: -3%));
     }
 
     &.active {
-        background: linear-gradient(145deg, $color-primary, $color-primary-light);
+        background: linear-gradient(145deg, color.scale($color-primary, $lightness: -5%), color.scale($color-primary-light, $lightness: -5%));
         border-color: $color-primary;
         color: white;
         box-shadow: 0 10px 15px -3px rgba($color-primary, 0.3), 0 4px 6px -2px rgba($color-primary, 0.2);
         
         h3 {
+            color: white;
+            transform: scale(1.05);
+        }
+
+        p.descripcion {
             color: white;
             transform: scale(1.05);
         }
@@ -142,7 +154,7 @@ $transition-speed: 0.2s;
 }
 
 .tarjeta-cobertura {
-    background: linear-gradient(145deg, $color-background, darken($color-background, 2%));
+    background: linear-gradient(145deg, $color-background, color.scale($color-background, $lightness: -2%));
     border: 1px solid $color-border;
     border-radius: 10px;
     padding: 15px;
@@ -162,14 +174,14 @@ $transition-speed: 0.2s;
     &:hover,
     &:focus {
         @include card-hover;
-        background: linear-gradient(145deg, darken($color-background, 1%), darken($color-background, 3%));
+        background: linear-gradient(145deg, color.scale($color-background, $lightness: -1%), color.scale($color-background, $lightness: -3%));
     }
 
     &.active {
-        background: linear-gradient(145deg, $color-success, darken($color-success, 5%));
+        background: linear-gradient(145deg, $color-success, color.scale($color-success, $lightness: -5%));
         border-color: $color-success;
         color: white;
-        box-shadow: 0 10px 15px -3px rgba($color-success, 0.3), 0 4px 6px -2px rgba($color-success, 0.2);
+        box-shadow: 0 10px 15px -3px rgba($color-success, 0.3), 0 4px 6px -1px rgba($color-success, 0.2);
         
         h4 {
             color: white;
@@ -205,7 +217,7 @@ $transition-speed: 0.2s;
 .formulario-contacto {
     margin-top: 20px;
     padding: 25px;
-    background: linear-gradient(145deg, $color-background, darken($color-background, 2%));
+    background: linear-gradient(145deg, $color-background, color.scale($color-background, $lightness: -2%));
     border: 1px solid $color-border;
     border-radius: $border-radius;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -251,7 +263,7 @@ $transition-speed: 0.2s;
         margin-top: 15px;
 
         &:hover {
-            background: linear-gradient(145deg, darken($color-primary, 5%), darken($color-primary-light, 5%));
+            background: linear-gradient(145deg, color.scale($color-primary, $lightness: -5%), color.scale($color-primary-light, $lightness: -5%));
             transform: translateY(-1px);
             box-shadow: 0 4px 6px -1px rgba($color-primary, 0.3), 0 2px 4px -1px rgba($color-primary, 0.2);
         }
@@ -262,7 +274,7 @@ $transition-speed: 0.2s;
         }
 
         &:disabled {
-            background: linear-gradient(145deg, $color-text-light, darken($color-text-light, 5%));
+            background: linear-gradient(145deg, $color-text-light, color.scale($color-text-light, $lightness: -5%));
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
@@ -291,7 +303,7 @@ $transition-speed: 0.2s;
 }
 
 .modal-contenido {
-    background: linear-gradient(145deg, $color-background, darken($color-background, 2%));
+    background: linear-gradient(145deg, $color-background, color.scale($color-background, $lightness: -2%));
     margin: 15% auto;
     padding: 30px;
     border: 1px solid $color-border;
@@ -399,7 +411,7 @@ $transition-speed: 0.2s;
 .progress-step {
     position: relative;
     z-index: 1;
-    background: linear-gradient(145deg, $color-background, darken($color-background, 2%));
+    background: linear-gradient(145deg, $color-background, color.scale($color-background, $lightness: -2%));
     border: 2px solid $color-border;
     border-radius: 50%;
     width: 45px;
@@ -413,6 +425,7 @@ $transition-speed: 0.2s;
     .step-number {
         font-weight: bold;
         color: $color-text-light;
+        transition: all $transition-speed ease;
     }
 
     .step-label {
@@ -422,17 +435,30 @@ $transition-speed: 0.2s;
         font-size: 0.8em;
         color: $color-text-light;
         white-space: nowrap;
+        transition: all $transition-speed ease;
     }
 
     &.active {
         background: linear-gradient(145deg, $color-primary, $color-primary-light);
         border-color: $color-primary;
         box-shadow: 0 4px 6px -1px rgba($color-primary, 0.3), 0 2px 4px -1px rgba($color-primary, 0.2);
+        
+        .step-number,
+        .step-label {
+            color: white;
+            transform: scale(1.05);
+        }
     }
 
     &.completed {
-        background: linear-gradient(145deg, $color-success, darken($color-success, 5%));
+        background: linear-gradient(145deg, $color-success, color.scale($color-success, $lightness: -5%));
         border-color: $color-success;
         box-shadow: 0 4px 6px -1px rgba($color-success, 0.3), 0 2px 4px -1px rgba($color-success, 0.2);
+        
+        .step-number,
+        .step-label {
+            color: white;
+            transform: scale(1.05);
+        }
     }
 }

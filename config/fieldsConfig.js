@@ -1,5 +1,5 @@
 export const camposOpcionalesConfig = {
-    inmuebles: [
+    'bienes personales': [
         { id: 'direccion', label: 'Dirección', type: 'text' },
         { id: 'localidad', label: 'Localidad', type: 'text' }
     ],
@@ -14,6 +14,14 @@ export const camposOpcionalesConfig = {
         { id: 'beneficiarios', label: 'Beneficiarios', type: 'text' }
     ],
     salud: [
+        { 
+            id: 'tiene-preexistencias', 
+            label: '¿Tiene preexistencias?', 
+            type: 'select',
+            options: ['', 'si', 'no']
+        }
+    ],
+    ART: [
         { 
             id: 'tiene-preexistencias', 
             label: '¿Tiene preexistencias?', 
