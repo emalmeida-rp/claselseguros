@@ -1,6 +1,7 @@
 import { validarCampo, validarFormularioCompleto } from '../modules/validations.js';
 import { guardarDatosLocalStorage, guardarDatosSessionStorage } from '../modules/storage.js';
 import { cargarFormularioOpcional, actualizarProgreso, mostrarModalResumen } from '../modules/ui.js';
+import { translations } from './translations.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const botonesSeguroPrincipal = document.querySelectorAll('.tarjeta-boton');
@@ -51,6 +52,57 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
     };
 
+    // Función para traducir elementos dinámicos
+    function translateDynamicElements() {
+        const lang = document.documentElement.lang || 'es';
+        const t = translations[lang];
+
+        // Traducir títulos de coberturas
+        const coberturaTitles = document.querySelectorAll('.tarjeta-cobertura h4');
+        coberturaTitles.forEach(title => {
+            const key = title.getAttribute('data-translate');
+            if (key && t[key]) {
+                title.textContent = t[key];
+            }
+        });
+
+        // Traducir formulario de contacto si existe
+        const formularioContacto = document.querySelector('.formulario-contacto');
+        if (formularioContacto) {
+            // Traducir elementos con data-translate
+            const elements = formularioContacto.querySelectorAll('[data-translate]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (t[key]) {
+                    element.textContent = t[key];
+                }
+            });
+
+            // Traducir placeholders
+            const inputs = formularioContacto.querySelectorAll('input[data-translate-placeholder]');
+            inputs.forEach(input => {
+                const key = input.getAttribute('data-translate-placeholder');
+                if (t[key]) {
+                    input.placeholder = t[key];
+                }
+            });
+
+            // Actualizar mensajes de error existentes
+            const errorSpans = formularioContacto.querySelectorAll('.error-message');
+            errorSpans.forEach(span => {
+                const input = formularioContacto.querySelector(`#${span.id.replace('-error', '')}`);
+                if (input && span.textContent) {
+                    validarCampo(input, span);
+                }
+            });
+        }
+    }
+
+    // Escuchar cambios en el idioma
+    document.addEventListener('languageChanged', () => {
+        translateDynamicElements();
+    });
+
     function mostrarCoberturas(tipoSeguro) {
         tipoSeguroSeleccionado = tipoSeguro;
         actualizarProgreso(2);
@@ -74,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const tituloCobertura = document.createElement('h4');
                 tituloCobertura.textContent = cobertura.tipo;
+                tituloCobertura.setAttribute('data-translate', `coverage_${cobertura.tipo.toLowerCase().replace(/ /g, '_')}`);
 
                 tarjetaCobertura.appendChild(iconoCobertura);
                 tarjetaCobertura.appendChild(tituloCobertura);
@@ -92,6 +145,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             contenedorBotonesPrincipal.insertAdjacentElement('afterend', contenedorCoberturasActivo);
+            
+            // Traducir elementos inmediatamente después de crearlos
+            translateDynamicElements();
         }
     }
 
@@ -102,32 +158,35 @@ document.addEventListener('DOMContentLoaded', () => {
         formularioContacto.setAttribute('role', 'form');
         formularioContacto.setAttribute('aria-label', `Formulario de contacto para ${tipoSeguro} - ${cobertura}`);
 
+        const lang = document.documentElement.lang || 'es';
+        const t = translations[lang];
+
         formularioContacto.innerHTML = `
-            <h3>Usted solicitará asesoramiento para ${tipoSeguro.toUpperCase()} > ${cobertura.toUpperCase()}</h3>
+            <h3 data-translate="requestAdvice">${t.requestAdvice} ${tipoSeguro.toUpperCase()} > ${cobertura.toUpperCase()}</h3>
             <div>
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" required aria-required="true">
+                <label for="nombre" data-translate="name">${t.name}</label>
+                <input type="text" id="nombre" name="nombre" required aria-required="true" data-translate-placeholder="namePlaceholder" placeholder="${t.namePlaceholder}">
                 <span class="error-message" id="nombre-error" role="alert"></span>
             </div>
             <div>
-                <label for="apellido">Apellido:</label>
-                <input type="text" id="apellido" name="apellido" required aria-required="true">
+                <label for="apellido" data-translate="lastName">${t.lastName}</label>
+                <input type="text" id="apellido" name="apellido" required aria-required="true" data-translate-placeholder="lastNamePlaceholder" placeholder="${t.lastNamePlaceholder}">
                 <span class="error-message" id="apellido-error" role="alert"></span>
             </div>
             <div>
-                <label for="telefono">Teléfono:</label>
-                <input type="tel" id="telefono" name="telefono" required aria-required="true">
+                <label for="telefono" data-translate="phone">${t.phone}</label>
+                <input type="tel" id="telefono" name="telefono" required aria-required="true" data-translate-placeholder="phonePlaceholder" placeholder="${t.phonePlaceholder}">
                 <span class="error-message" id="telefono-error" role="alert"></span>
             </div>
             <div>
-                <label for="email">Email (opcional):</label>
-                <input type="email" id="email" name="email" aria-required="false">
+                <label for="email" data-translate="email">${t.email}</label>
+                <input type="email" id="email" name="email" aria-required="false" data-translate-placeholder="emailPlaceholder" placeholder="${t.emailPlaceholder}">
                 <span class="error-message" id="email-error" role="alert"></span>
             </div>
-            <button type="button" id="cargar-mas-info-btn" aria-expanded="false">Quiero cargar más información</button>
+            <button type="button" id="cargar-mas-info-btn" aria-expanded="false" data-translate="moreInfo">${t.moreInfo}</button>
             <div id="formulario-opcional-container" style="display: none;" aria-hidden="true">
             </div>
-            <button type="button" id="confirmar-datos-btn" disabled aria-disabled="true">Confirmar</button>
+            <button type="button" id="confirmar-datos-btn" disabled aria-disabled="true" data-translate="confirm">${t.confirm}</button>
         `;
 
         contenedorFormularios.appendChild(formularioContacto);
@@ -191,9 +250,9 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Campos requeridos',
-                    text: 'Por favor, complete los campos requeridos.',
-                    confirmButtonText: 'Entendido',
+                    title: t?.requiredFields || 'Campos requeridos',
+                    text: t?.completeRequiredFields || 'Por favor, complete los campos requeridos.',
+                    confirmButtonText: t?.understood || 'Entendido',
                     confirmButtonColor: '#007bff'
                 });
             }

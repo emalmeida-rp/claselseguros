@@ -14,24 +14,25 @@
 
 <body>
     <header>
-        <h1 class="text-fluid"><img src="../img/logo.png" alt="logo" class="img-fluid icon-header">Asesores de seguros y
+        <img src="../img/logo.png" alt="logo" class="img-fluid icon-header">
+        <h1 class="text-fluid" data-translate="headerTitle">Asesores de seguros y
             Gestoría integral del automotor</h1>
     </header>
     <nav class="navbar navbar-expand-lg navbar-dark">
-            <a class="navbar-brand" href="../index.html">Menú</a>
+            <a class="navbar-brand" href="../index.html" data-translate="menu">Menú</a>
             <div class="theme-switch-wrapper">
-                <label class="theme-label" for="theme-toggle">Tema:</label>
+                <label class="theme-label" for="theme-toggle" data-translate="theme">Tema:</label>
                 <label class="theme-switch">
                     <input type="checkbox" id="theme-toggle">
                     <span class="slider round"></span>
                 </label>
             </div>
             <div class="language-selector">
-                <label for="language-select">Idioma:</label>
+                <label for="language-select" data-translate="language">Idioma:</label>
                 <select id="language-select">
                     <option value="es" selected>Español</option>
-                    <option value="en">Inglés</option>
-                    <option value="fr">Francés</option>
+                    <option value="en">English</option>
+                    <option value="fr">Français</option>
                 </select>
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -41,16 +42,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Contacto</a>
+                        <a class="nav-link" href="#" data-translate="contact">Contacto</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../pages/contratarseguro.html">Contrata tu seguro</a>
+                        <a class="nav-link" href="../pages/contratarseguro.html" data-translate="contractInsurance">Contrata tu seguro</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Gestoría</a>
+                        <a class="nav-link" href="#" data-translate="management">Gestoría</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Compañías</a>
+                        <a class="nav-link" href="#" data-translate="companies">Compañías</a>
                     </li>
                 </ul>
             </div>
@@ -59,56 +60,56 @@
         <div class="progress-indicator" role="progressbar" aria-label="Progreso del formulario">
             <div class="progress-step" data-step="1">
                 <span class="step-number" aria-hidden="true">1</span>
-                <span class="step-label">Tipo de Seguro</span>
+                <span class="step-label" data-translate="insuranceType">Tipo de Seguro</span>
             </div>
             <div class="progress-step" data-step="2">
                 <span class="step-number" aria-hidden="true">2</span>
-                <span class="step-label">Cobertura</span>
+                <span class="step-label" data-translate="coverage">Cobertura</span>
             </div>
             <div class="progress-step" data-step="3">
                 <span class="step-number" aria-hidden="true">3</span>
-                <span class="step-label">Datos Personales</span>
+                <span class="step-label" data-translate="personalData">Datos Personales</span>
             </div>
             <div class="progress-step" data-step="4">
                 <span class="step-number" aria-hidden="true">4</span>
-                <span class="step-label">Confirmación</span>
+                <span class="step-label" data-translate="confirmation">Confirmación</span>
             </div>
         </div>
 
         <div class="contenedor-botones" role="group" aria-label="Tipos de seguros disponibles">
             <div class="tarjeta-boton" data-target="bienes personales">
                 <i class="bi bi-house-door icono"></i>
-                <h3>Bienes Personales</h3>
-                <p class="descripcion">Protege tu hogar y propiedades</p>
+                <h3 data-translate="personalProperty">Bienes Personales</h3>
+                <p class="descripcion" data-translate="personalPropertyDesc">Protege tu hogar y propiedades</p>
             </div>
             <div class="tarjeta-boton" data-target="vida">
                 <i class="bi bi-heart-pulse-fill icono"></i>
-                <h3>Planes de salud</h3>
-                <p class="descripcion">Protege tu salud y bienestar</p>
+                <h3 data-translate="healthPlans">Planes de salud</h3>
+                <p class="descripcion" data-translate="healthPlansDesc">Protege tu salud y bienestar</p>
             </div>
             <div class="tarjeta-boton" data-target="automovil">
                 <i class="bi bi-car-front-fill icono"></i>
-                <h3>Transporte </h3>
-                <p class="descripcion">Protege tu vehículo y tu seguridad</p>
+                <h3 data-translate="transport">Transporte</h3>
+                <p class="descripcion" data-translate="transportDesc">Protege tu vehículo y tu seguridad</p>
             </div>
             <div class="tarjeta-boton" data-target="ART">
                 <i class="bi bi-hospital icono"></i>
-                <h3>Seguros ART</h3>
-                <p class="descripcion">Cobertura para riesgos del trabajo</p>
+                <h3 data-translate="workInsurance">Seguros ART</h3>
+                <p class="descripcion" data-translate="workInsuranceDesc">Cobertura para riesgos del trabajo</p>
             </div>
         </div>
         <div id="modal-resumen" class="modal" role="dialog" aria-labelledby="modal-titulo" aria-modal="true">
             <div class="modal-contenido">
                 <span class="cerrar-modal" role="button" aria-label="Cerrar modal">&times;</span>
-                <h2>Resumen de la solicitud</h2>
+                <h2 data-translate="requestSummary">Resumen de la solicitud</h2>
                 <h3 id="modal-titulo"></h3>
                 <ul id="modal-datos" role="list">
                 </ul>
                 <div class="modal-botones" role="group" aria-label="Acciones disponibles">
-                    <button id="editar-datos-btn" role="button" aria-label="Volver atrás para editar datos">Volver</button>
-                    <button id="enviar-mail-btn" role="button" aria-label="Enviar solicitud por email">Enviar por Email</button>
-                    <button id="enviar-whatsapp-btn" role="button" aria-label="Enviar solicitud por WhatsApp">Enviar por WhatsApp</button>
-                    <button id="cancelar-operacion-btn" role="button" aria-label="Cancelar y reiniciar el proceso">Cancelar y Reiniciar</button>
+                    <button id="editar-datos-btn" role="button" aria-label="Volver atrás para editar datos" data-translate="back">Volver</button>
+                    <button id="enviar-mail-btn" role="button" aria-label="Enviar solicitud por email" data-translate="sendEmail">Enviar por Email</button>
+                    <button id="enviar-whatsapp-btn" role="button" aria-label="Enviar solicitud por WhatsApp" data-translate="sendWhatsapp">Enviar por WhatsApp</button>
+                    <button id="cancelar-operacion-btn" role="button" aria-label="Cancelar y reiniciar el proceso" data-translate="cancelReset">Cancelar y Reiniciar</button>
                 </div>
             </div>
         </div>
@@ -117,7 +118,7 @@
         </div>
 
     </main>
-    <script src="../app/switch.js"></script>
+    <script type="module" src="../app/switch.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module" src="../app/contratar.js"></script>
 </body>

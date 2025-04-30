@@ -176,6 +176,8 @@ document.addEventListener('DOMContentLoaded', function() {
         htmlElement.lang = lang;
         localStorage.setItem('language', lang);
         translateElements(lang);
+        // Emitir evento personalizado para que otros componentes puedan reaccionar
+        document.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
     }
 
     // Inicializar tema
