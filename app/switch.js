@@ -52,40 +52,82 @@ const zonasBsas = [
     }
 ];
 
-//Selector de temas
+// Selector de temas
 document.addEventListener('DOMContentLoaded', function() {
     const themeToggle = document.getElementById('theme-toggle');
     const languageSelect = document.getElementById('language-select');
     const body = document.body;
     const htmlElement = document.documentElement;
-    const storedTheme = localStorage.getItem('theme');
-    const storedLanguage = localStorage.getItem('language');
-
+    
+    // Función para aplicar el tema
     function setTheme(theme) {
+        // Aplicar transición suave
+        body.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+        
         if (theme === 'dark') {
             body.classList.add('dark-theme');
             themeToggle.checked = true;
+            
+            // Aplicar tema oscuro a elementos específicos
+            document.querySelectorAll('.card, .navbar, .footer').forEach(element => {
+                element.classList.add('dark-theme');
+            });
         } else {
             body.classList.remove('dark-theme');
             themeToggle.checked = false;
+            
+            // Remover tema oscuro de elementos específicos
+            document.querySelectorAll('.card, .navbar, .footer').forEach(element => {
+                element.classList.remove('dark-theme');
+            });
         }
+        
+        // Guardar preferencia
         localStorage.setItem('theme', theme);
+        
+        // Emitir evento personalizado para que otros componentes puedan reaccionar
+        document.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme } }));
     }
 
-    
+    // Función para detectar preferencia del sistema
+    function getSystemTheme() {
+        return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    // Función para inicializar el tema
+    function initializeTheme() {
+        const storedTheme = localStorage.getItem('theme');
+        const systemTheme = getSystemTheme();
+        
+        // Usar tema guardado o preferencia del sistema
+        const theme = storedTheme || systemTheme;
+        setTheme(theme);
+        
+        // Escuchar cambios en la preferencia del sistema
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) {
+                setTheme(e.matches ? 'dark' : 'light');
+            }
+        });
+    }
+
+    // Inicializar tema
+    initializeTheme();
+
+    // Event listeners
+    themeToggle.addEventListener('change', function() {
+        const newTheme = this.checked ? 'dark' : 'light';
+        setTheme(newTheme);
+    });
+
+    // Obtener el lenguaje almacenado
+    const storedLanguage = localStorage.getItem('language');
+
     function setLanguage(lang) {
         htmlElement.lang = lang;
         localStorage.setItem('language', lang);
     }
 
-    
-    if (storedTheme) {
-        setTheme(storedTheme);
-    } else {
-        setTheme('light'); 
-    }
-
-   
     if (storedLanguage) {
         languageSelect.value = storedLanguage;
         setLanguage(storedLanguage); 
@@ -93,13 +135,6 @@ document.addEventListener('DOMContentLoaded', function() {
         setLanguage('es'); 
     }
 
- 
-    themeToggle.addEventListener('change', function() {
-        const newTheme = this.checked ? 'dark' : 'light';
-        setTheme(newTheme);
-    });
-
-  
     languageSelect.addEventListener('change', function() {
         const selectedLanguage = this.value;
         setLanguage(selectedLanguage);

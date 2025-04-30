@@ -42,3 +42,201 @@
         height: 0;
     }
 }
+
+* {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark-theme {
+    background-color: #1a1a1a;
+    color: #ffffff;
+
+    // Elementos de texto
+    h1, h2, h3, h4, h5, h6, p, span, label {
+        color: #ffffff;
+    }
+
+    // Elementos de formulario
+    input, select, textarea {
+        background-color: #2d2d2d;
+        color: #ffffff;
+        border-color: #404040;
+
+        &::placeholder {
+            color: #a0a0a0;
+        }
+    }
+
+    // Enlaces
+    a {
+        color: #3b82f6;
+        
+        &:hover {
+            color: #60a5fa;
+        }
+    }
+
+    // Cards y contenedores
+    .card, .navbar, .footer, .modal-contenido, .formulario-contacto {
+        background-color: #2d2d2d;
+        border-color: #404040;
+    }
+
+    // Botones
+    button {
+        background-color: #3b82f6;
+        color: #ffffff;
+        
+        &:hover {
+            background-color: #2563eb;
+        }
+    }
+
+    // Selectores y controles
+    .theme-switch-wrapper, .language-selector {
+        color: #ffffff;
+    }
+
+    // Elementos de navegación
+    .navbar-dark {
+        background-color: #2d2d2d;
+        
+        .navbar-brand, .nav-link {
+            color: #ffffff;
+        }
+    }
+
+    // Elementos de progreso
+    .progress-step {
+        background-color: #2d2d2d;
+        border-color: #404040;
+        
+        &.active {
+            background-color: #3b82f6;
+        }
+    }
+
+    // Slide container
+    .slide-container {
+        background-color: #23272f;
+        color: #ffffff;
+    }
+
+    // Header
+    header {
+        background: linear-gradient(90deg, #23343a 0%, #1a3a4a 100%) !important;
+        color: #fff !important;
+        h1, h2, h3, h4, h5, h6, p, span {
+            color: #fff !important;
+        }
+    }
+
+    // Main
+    main {
+        background: linear-gradient(0deg, #23272f 0%, #2d3a4a 100%) !important;
+        color: #fff !important;
+    }
+
+    // Navbar
+    .navbar, .navbar-dark {
+        background: linear-gradient(90deg, #3a4d5c 0%, #29506b 100%) !important;
+        color: #fff !important;
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+            &:hover, &:focus {
+                color: #3bc1e2 !important;
+            }
+        }
+    }
+
+    // Footer
+    footer {
+        background: linear-gradient(90deg, #1a232b 0%, #23272f 100%) !important;
+        color: #fff !important;
+        h3, p, a, span {
+            color: #fff !important;
+        }
+        .footer-lists ul li a {
+            color: #ccc !important;
+            &:hover {
+                color: #fff !important;
+            }
+        }
+    }
+}
+
+.dark-theme .card {
+    background-color: #2d2d2d;
+    border-color: #404040;
+}
+
+.dark-theme .navbar {
+    background-color: #2d2d2d;
+}
+
+.dark-theme .footer {
+    background-color: #2d2d2d;
+}
+
+.dark-theme .slide-container {
+    background: linear-gradient(135deg, #23272f 0%, #2d3a4a 100%) !important;
+    color: #ffffff !important;
+}
+
+// Tema claro (por defecto)
+header {
+  background: linear-gradient(90deg, #d6eaff 0%, #b3d8f7 100%);
+  color: #16324f;
+  h1, h2, h3, h4, h5, h6, p, span {
+    color: #16324f;
+  }
+}
+
+main {
+  background: linear-gradient(0deg, #eaf6fb 0%, #d2eafd 100%);
+  color: #16324f;
+}
+
+.navbar, .navbar-light {
+  background: linear-gradient(90deg, #b3e0f7 0%, #e3f0ff 100%);
+  color: #16324f;
+  .navbar-brand, .nav-link {
+    color: #16324f;
+    &:hover, &:focus {
+      color: #2563eb;
+    }
+  }
+}
+
+footer {
+  background: linear-gradient(90deg, #e3f0ff 0%, #b3e0f7 100%);
+  color: #16324f;
+  h3, p, a, span {
+    color: #16324f;
+  }
+  .footer-lists ul li a {
+    color: #2563eb;
+    &:hover {
+      color: #16324f;
+    }
+  }
+}
+
+// Responsividad para textos y paddings
+@media (max-width: 992px) {
+  header h1 {
+    font-size: 2rem;
+  }
+  main {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 1.2rem;
+  }
+  main {
+    padding: 0.5rem;
+  }
+}
