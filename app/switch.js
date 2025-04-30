@@ -52,6 +52,9 @@ const zonasBsas = [
     }
 ];
 
+// Importar traducciones
+import { translations } from './translations.js';
+
 // Selector de temas
 document.addEventListener('DOMContentLoaded', function() {
     const themeToggle = document.getElementById('theme-toggle');
@@ -139,6 +142,42 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Función para traducir elementos
+    function translateElements(lang) {
+        const elements = document.querySelectorAll('[data-translate]');
+        elements.forEach(element => {
+            const key = element.getAttribute('data-translate');
+            if (translations[lang] && translations[lang][key]) {
+                element.textContent = translations[lang][key];
+            }
+        });
+
+        // Traducir placeholders
+        const inputs = document.querySelectorAll('input[data-translate-placeholder]');
+        inputs.forEach(input => {
+            const key = input.getAttribute('data-translate-placeholder');
+            if (translations[lang] && translations[lang][key]) {
+                input.placeholder = translations[lang][key];
+            }
+        });
+
+        // Traducir opciones del selector de idioma
+        const languageOptions = languageSelect.querySelectorAll('option');
+        languageOptions.forEach(option => {
+            const langCode = option.value;
+            if (translations[lang] && translations[lang][`language_${langCode}`]) {
+                option.textContent = translations[lang][`language_${langCode}`];
+            }
+        });
+    }
+
+    // Función para establecer el idioma
+    function setLanguage(lang) {
+        htmlElement.lang = lang;
+        localStorage.setItem('language', lang);
+        translateElements(lang);
+    }
+
     // Inicializar tema
     initializeTheme();
 
@@ -150,11 +189,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Obtener el lenguaje almacenado
     const storedLanguage = localStorage.getItem('language');
-
-    function setLanguage(lang) {
-        htmlElement.lang = lang;
-        localStorage.setItem('language', lang);
-    }
 
     if (storedLanguage) {
         languageSelect.value = storedLanguage;

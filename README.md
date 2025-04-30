@@ -3,14 +3,14 @@
 ## Descripción del Proyecto
 CLASEL Asesores de Seguros es una plataforma web moderna diseñada para facilitar la gestión y contratación de seguros. La aplicación ofrece una interfaz intuitiva y accesible para mejorar la experiencia del usuario.
 
-## Componentes Principales
+Componentes Principales
 
 ### Switch de Tema
 El componente de cambio de tema permite a los usuarios alternar entre un modo claro y oscuro. Características:
 - Transición suave entre temas
 - Persistencia de la preferencia del usuario
 - Adaptación automática a las preferencias del sistema
-- Personalización completa de colores y estilos para cada tema
+- Personalización completa de colores y estilos para la mayoria de elemntos del DOM
 
 ### Selector de Idioma
 El selector de idioma ofrece soporte multilingüe con las siguientes características:
@@ -24,7 +24,7 @@ El emulador de contratación es una herramienta interactiva que guía al usuario
 - Interfaz paso a paso con indicador de progreso
 - Validación de datos en tiempo real
 - Resumen de la solicitud antes de enviar
-- Múltiples opciones de envío (email, WhatsApp)
+- Opciones de envío (email, WhatsApp)
 - Diseño responsivo y accesible
 
 ## Tecnologías Utilizadas
@@ -32,8 +32,7 @@ El emulador de contratación es una herramienta interactiva que guía al usuario
 - CSS3/SCSS
 - JavaScript
 - Bootstrap 5
-- Glide.js para carruseles
-- Swiffy Slider para componentes deslizantes
+- Glide.js para el carrusel
 
 ## Características Adicionales
 - Diseño responsivo para todos los dispositivos
