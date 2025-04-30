@@ -68,6 +68,20 @@ document.addEventListener('DOMContentLoaded', function() {
             body.classList.add('dark-theme');
             themeToggle.checked = true;
             
+            // Definir variables CSS para tema oscuro
+            document.documentElement.style.setProperty('--footer-bg-color', '#1a232b');
+            document.documentElement.style.setProperty('--footer-text-color', '#ffffff');
+            document.documentElement.style.setProperty('--footer-link-color', '#cccccc');
+            document.documentElement.style.setProperty('--footer-link-hover-color', '#ffffff');
+            document.documentElement.style.setProperty('--footer-border-color', '#404040');
+            document.documentElement.style.setProperty('--location-bg-color', '#2d2d2d');
+            document.documentElement.style.setProperty('--location-border-color', '#404040');
+            document.documentElement.style.setProperty('--location-text-color', '#ffffff');
+            document.documentElement.style.setProperty('--button-bg-color', '#3b82f6');
+            document.documentElement.style.setProperty('--button-text-color', '#ffffff');
+            document.documentElement.style.setProperty('--button-hover-bg-color', '#2563eb');
+            document.documentElement.style.setProperty('--map-bg-color', '#404040');
+            
             // Aplicar tema oscuro a elementos específicos
             document.querySelectorAll('.card, .navbar, .footer').forEach(element => {
                 element.classList.add('dark-theme');
@@ -75,6 +89,20 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             body.classList.remove('dark-theme');
             themeToggle.checked = false;
+            
+            // Definir variables CSS para tema claro
+            document.documentElement.style.setProperty('--footer-bg-color', '#add8e6');
+            document.documentElement.style.setProperty('--footer-text-color', '#333333');
+            document.documentElement.style.setProperty('--footer-link-color', '#666666');
+            document.documentElement.style.setProperty('--footer-link-hover-color', '#000000');
+            document.documentElement.style.setProperty('--footer-border-color', '#444444');
+            document.documentElement.style.setProperty('--location-bg-color', '#e3f0ff');
+            document.documentElement.style.setProperty('--location-border-color', '#b3e0f7');
+            document.documentElement.style.setProperty('--location-text-color', '#16324f');
+            document.documentElement.style.setProperty('--button-bg-color', '#2563eb');
+            document.documentElement.style.setProperty('--button-text-color', '#ffffff');
+            document.documentElement.style.setProperty('--button-hover-bg-color', '#1d4ed8');
+            document.documentElement.style.setProperty('--map-bg-color', '#b3e0f7');
             
             // Remover tema oscuro de elementos específicos
             document.querySelectorAll('.card, .navbar, .footer').forEach(element => {

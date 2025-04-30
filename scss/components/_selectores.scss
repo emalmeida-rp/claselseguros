@@ -153,14 +153,40 @@
     footer {
         background: linear-gradient(90deg, #1a232b 0%, #23272f 100%) !important;
         color: #fff !important;
+        
         h3, p, a, span {
             color: #fff !important;
         }
+        
         .footer-lists ul li a {
             color: #ccc !important;
             &:hover {
                 color: #fff !important;
             }
+        }
+        
+        .location-format {
+            background-color: #2d2d2d !important;
+            border: 1px solid #404040 !important;
+            
+            p, span {
+                color: #fff !important;
+            }
+            
+            button {
+                background-color: #3b82f6 !important;
+                &:hover {
+                    background-color: #2563eb !important;
+                }
+            }
+            
+            #mapa {
+                background-color: #404040 !important;
+            }
+        }
+        
+        .footer-copyright {
+            border-top-color: #404040 !important;
         }
     }
 }
