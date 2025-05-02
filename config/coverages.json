@@ -1,0 +1,45 @@
+{
+    "bienes personales": [
+        { "tipo": "Domicilio Particular", "icono": "bi-house-door", "key": "coverage_domicilio_particular" },
+        { "tipo": "Departamento", "icono": "bi-building", "key": "coverage_departamento" },
+        { "tipo": "Comercios", "icono": "bi-shop", "key": "coverage_comercios" },
+        { "tipo": "Edificios", "icono": "bi-buildings", "key": "coverage_edificios" },
+        { "tipo": "Terrenos", "icono": "bi-tree", "key": "coverage_terrenos" }
+    ],
+    "vida": [
+        { "tipo": "Plan de Salud Individual", "icono": "bi-person", "key": "coverage_individual" },
+        { "tipo": "Plan de Salud Familiar", "icono": "bi-people", "key": "coverage_familiar" },
+        { "tipo": "Plan de Salud con Ahorro", "icono": "bi-piggy-bank", "key": "coverage_con_ahorro" },
+        { "tipo": "Plan de Salud Temporario", "icono": "bi-clock", "key": "coverage_temporario" },
+        { "tipo": "Plan de Salud Dental", "icono": "bi-bandaid", "key": "coverage_dental" },
+        { "tipo": "Seguro para Perros", "icono": "bi-shield-check", "key": "coverage_perros" },
+        { "tipo": "Seguro para Gatos", "icono": "bi-heart-fill", "key": "coverage_gatos" }
+    ],
+    "automovil": [
+        { "tipo": "Autos 4 puertas", "icono": "bi-car-front", "key": "coverage_autos_4_puertas" },
+        { "tipo": "Autos 5 puertas", "icono": "bi-car-front-fill", "key": "coverage_autos_5_puertas" },
+        { "tipo": "Motos", "icono": "bi-bicycle", "key": "coverage_motos" },
+        { "tipo": "Camionetas / SUVs", "icono": "bi-truck", "key": "coverage_camionetas_suvs" },
+        { "tipo": "Vehículos Comerciales", "icono": "bi-truck-flatbed", "key": "coverage_vehículos_comerciales" }
+    ],
+    "ART": [
+        { 
+            "tipo": "Accidente de trabajo", 
+            "icono": "bi-hospital",
+            "key": "coverage_accidente_trabajo",
+            "descripcionKey": "desc_accidente_trabajo"
+        },
+        { 
+            "tipo": "Accidente in itinere", 
+            "icono": "bi-hospital-fill",
+            "key": "coverage_accidente_itinere",
+            "descripcionKey": "desc_accidente_itinere"
+        },
+        { 
+            "tipo": "Enfermedad profesional", 
+            "icono": "bi-file-medical",
+            "key": "coverage_enfermedad_profesional",
+            "descripcionKey": "desc_enfermedad_profesional"
+        }
+    ]
+} 

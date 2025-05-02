@@ -28,6 +28,7 @@ function mostrarNotificacion(tipo, claveTitulo, claveMensaje, duracion = 3000) {
 }
 
 let optionalFormsConfig = null;
+let coberturas = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
     // Cargar traducciones al inicio
@@ -36,10 +37,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Cargar configuración de formularios opcionales
         const response = await fetch('/config/optionalForms.json');
         optionalFormsConfig = await response.json();
+        // Cargar configuración de coberturas
+        const responseCoverages = await fetch('../config/coverages.json');
+        if (!responseCoverages.ok) {
+            throw new Error(`HTTP error! status: ${responseCoverages.status}`);
+        }
+        coberturas = await responseCoverages.json();
+        console.log('Coberturas cargadas correctamente:', coberturas);
         mostrarNotificacion('success', 'notif_system_ready', 'notif_system_ready_desc');
     } catch (error) {
-        mostrarNotificacion('error', 'notif_system_error', 'notif_system_error_desc');
         console.error('Error al cargar configuraciones:', error);
+        mostrarNotificacion('error', 'notif_system_error', 'notif_system_error_desc');
+        // Cargar coberturas por defecto en caso de error
+        coberturas = {
+            'bienes personales': [],
+            'vida': [],
+            'automovil': [],
+            'ART': []
+        };
     }
 
     const botonesSeguroPrincipal = document.querySelectorAll('.tarjeta-boton');
@@ -59,36 +74,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     let datosOpcionalesGuardados = '';
 
     actualizarProgreso(1);
-
-    // Array Coberturas
-    const coberturas = {
-        'bienes personales': [
-            { tipo: 'Domicilio Particular', icono: 'bi-house-door' },
-            { tipo: 'Departamento', icono: 'bi-building' },
-            { tipo: 'Comercios', icono: 'bi-shop' },
-            { tipo: 'Edificios', icono: 'bi-buildings' },
-            { tipo: 'Terrenos', icono: 'bi-tree' }
-        ],
-        vida: [
-            { tipo: 'Individual', icono: 'bi-person' },
-            { tipo: 'Familiar', icono: 'bi-people' },
-            { tipo: 'Con Ahorro', icono: 'bi-piggy-bank' },
-            { tipo: 'Temporario', icono: 'bi-clock' }
-        ],
-        automovil: [
-            { tipo: 'Autos 4 puertas', icono: 'bi-car-front' },
-            { tipo: 'Autos 5 puertas', icono: 'bi-car-front-fill' },
-            { tipo: 'Motos', icono: 'bi-bicycle' },
-            { tipo: 'Camionetas / SUVs', icono: 'bi-truck' },
-            { tipo: 'Vehículos Comerciales', icono: 'bi-truck-flatbed' }
-        ],
-        ART: [
-            { tipo: 'Plan Básico', icono: 'bi-hospital', key: 'coverage_plan_básico' },
-            { tipo: 'Plan Medio', icono: 'bi-hospital-fill', key: 'coverage_plan_medio' },
-            { tipo: 'Plan Premium', icono: 'bi-file-medical', key: 'coverage_plan_premium' },
-            { tipo: 'Dental', icono: 'bi-bandaid', key: 'coverage_dental' }
-        ]
-    };
 
     // Función para traducir un elemento
     function translateElement(element) {
@@ -163,7 +148,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             contenedorCoberturasActivo = '';
         }
 
-        if (coberturas[tipoSeguro]) {
+        if (coberturas && coberturas[tipoSeguro]) {
             contenedorCoberturasActivo = document.createElement('div');
             contenedorCoberturasActivo.classList.add('contenedor-coberturas');
 
@@ -177,10 +162,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 const tituloCobertura = document.createElement('h4');
                 tituloCobertura.textContent = cobertura.tipo;
-                tituloCobertura.setAttribute('data-translate', cobertura.key || `coverage_${cobertura.tipo.toLowerCase().replace(/ /g, '_')}`);
+                tituloCobertura.setAttribute('data-translate', cobertura.key);
+
+                const descripcionCobertura = document.createElement('p');
+                descripcionCobertura.classList.add('descripcion-cobertura');
+                if (cobertura.descripcionKey) {
+                    descripcionCobertura.setAttribute('data-translate', cobertura.descripcionKey);
+                }
 
                 tarjetaCobertura.appendChild(iconoCobertura);
                 tarjetaCobertura.appendChild(tituloCobertura);
+                if (cobertura.descripcionKey) {
+                    tarjetaCobertura.appendChild(descripcionCobertura);
+                }
                 contenedorCoberturasActivo.appendChild(tarjetaCobertura);
 
                 tarjetaCobertura.addEventListener('click', () => {
@@ -196,125 +190,151 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             contenedorBotonesPrincipal.insertAdjacentElement('afterend', contenedorCoberturasActivo);
-            
-            // Traducir elementos inmediatamente después de crearlos
             translateDynamicElements();
+        } else {
+            mostrarNotificacion('error', 'notif_system_error', 'notif_system_error_desc');
         }
     }
 
     function mostrarFormularioContacto(tipoSeguro, cobertura) {
-        actualizarProgreso(3);
-        mostrarNotificacion('info', 'notif_new_form', 'notif_new_form_desc', 2000);
-        const formularioContacto = document.createElement('form');
-        formularioContacto.classList.add('formulario-contacto');
-        formularioContacto.setAttribute('role', 'form');
-        formularioContacto.setAttribute('aria-label', `Formulario de contacto para ${tipoSeguro} - ${cobertura}`);
-
-        formularioContacto.innerHTML = `
-            <h3 data-translate="requestAdvice">${translationService.getTranslation('requestAdvice')} ${tipoSeguro.toUpperCase()} > ${cobertura.toUpperCase()}</h3>
-            <div>
-                <label for="nombre" data-translate="name">${translationService.getTranslation('name')}</label>
-                <input type="text" id="nombre" name="nombre" required aria-required="true" data-translate-placeholder="namePlaceholder" placeholder="${translationService.getTranslation('namePlaceholder')}">
-                <span class="error-message" id="nombre-error" role="alert"></span>
-            </div>
-            <div>
-                <label for="apellido" data-translate="lastName">${translationService.getTranslation('lastName')}</label>
-                <input type="text" id="apellido" name="apellido" required aria-required="true" data-translate-placeholder="lastNamePlaceholder" placeholder="${translationService.getTranslation('lastNamePlaceholder')}">
-                <span class="error-message" id="apellido-error" role="alert"></span>
-            </div>
-            <div>
-                <label for="telefono" data-translate="phone">${translationService.getTranslation('phone')}</label>
-                <input type="tel" id="telefono" name="telefono" required aria-required="true" data-translate-placeholder="phonePlaceholder" placeholder="${translationService.getTranslation('phonePlaceholder')}">
-                <span class="error-message" id="telefono-error" role="alert"></span>
-            </div>
-            <div>
-                <label for="email" data-translate="email">${translationService.getTranslation('email')}</label>
-                <input type="email" id="email" name="email" aria-required="false" data-translate-placeholder="emailPlaceholder" placeholder="${translationService.getTranslation('emailPlaceholder')}">
-                <span class="error-message" id="email-error" role="alert"></span>
-            </div>
-            <button type="button" id="cargar-mas-info-btn" aria-expanded="false" data-translate="moreInfo">${translationService.getTranslation('moreInfo')}</button>
-            <div id="formulario-opcional-container" style="display: none;" aria-hidden="true">
-            </div>
-            <button type="button" id="confirmar-datos-btn" disabled aria-disabled="true" data-translate="confirm">${translationService.getTranslation('confirm')}</button>
-        `;
-
-        contenedorFormularios.appendChild(formularioContacto);
-
-        const cargarMasInfoBtn = formularioContacto.querySelector('#cargar-mas-info-btn');
-        const formularioOpcionalContainer = formularioContacto.querySelector('#formulario-opcional-container');
-        const confirmarDatosBtn = formularioContacto.querySelector('#confirmar-datos-btn');
-
-        formularioContacto.addEventListener('input', (e) => {
-            if (e.target.matches('input') && e.target.closest('.formulario-contacto')) {
-                const errorSpan = formularioContacto.querySelector(`#${e.target.id}-error`);
-                if (errorSpan) {
-                    validarCampo(e.target, errorSpan);
-                    actualizarEstadoBotonConfirmar();
-                }
-            }
-        });
-
-        formularioContacto.addEventListener('blur', (e) => {
-            if (e.target.matches('input') && e.target.closest('.formulario-contacto')) {
-                const errorSpan = formularioContacto.querySelector(`#${e.target.id}-error`);
-                if (errorSpan) {
-                    validarCampo(e.target, errorSpan);
-                    actualizarEstadoBotonConfirmar();
-                }
-            }
-        }, true);
-
-        cargarMasInfoBtn.addEventListener('click', () => {
-            const isExpanded = cargarMasInfoBtn.getAttribute('aria-expanded') === 'true';
-            cargarMasInfoBtn.setAttribute('aria-expanded', !isExpanded);
-            formularioOpcionalContainer.style.display = isExpanded ? 'none' : 'block';
-            formularioOpcionalContainer.setAttribute('aria-hidden', isExpanded);
-            if (!isExpanded) {
-                mostrarFormularioOpcional(tipoSeguro);
-            }
-        });
-
-        function actualizarEstadoBotonConfirmar() {
-            const formularioContacto = document.querySelector('.formulario-contacto');
-            const confirmarDatosBtn = document.querySelector('#confirmar-datos-btn');
+        try {
+            console.log('Mostrando formulario para:', tipoSeguro, cobertura);
+            actualizarProgreso(3);
+            mostrarNotificacion('info', 'notif_new_form', 'notif_new_form_desc', 2000);
             
-            if (validarFormularioCompleto(formularioContacto)) {
-                confirmarDatosBtn.disabled = false;
-                confirmarDatosBtn.classList.remove('disabled');
-                mostrarNotificacion('success', 'notif_form_complete', 'notif_form_complete_desc');
-            } else {
-                confirmarDatosBtn.disabled = true;
-                confirmarDatosBtn.classList.add('disabled');
+            const formularioContacto = document.createElement('form');
+            formularioContacto.classList.add('formulario-contacto');
+            formularioContacto.setAttribute('role', 'form');
+            formularioContacto.setAttribute('aria-label', `Formulario de contacto para ${tipoSeguro} - ${cobertura}`);
+
+            // Verificar que translationService esté disponible
+            if (!translationService) {
+                throw new Error('Servicio de traducción no disponible');
             }
+
+            // Obtener traducciones
+            const requestAdviceText = translationService.getTranslation('requestAdvice') || 'Solicitar asesoramiento para';
+            const nameLabel = translationService.getTranslation('name') || 'Nombre';
+            const lastNameLabel = translationService.getTranslation('lastName') || 'Apellido';
+            const phoneLabel = translationService.getTranslation('phone') || 'Teléfono';
+            const emailLabel = translationService.getTranslation('email') || 'Email';
+            const namePlaceholder = translationService.getTranslation('namePlaceholder') || 'Ingrese su nombre';
+            const lastNamePlaceholder = translationService.getTranslation('lastNamePlaceholder') || 'Ingrese su apellido';
+            const phonePlaceholder = translationService.getTranslation('phonePlaceholder') || 'Ingrese su teléfono';
+            const emailPlaceholder = translationService.getTranslation('emailPlaceholder') || 'Ingrese su email';
+            const moreInfoText = translationService.getTranslation('moreInfo') || 'Quiero cargar más información';
+            const confirmText = translationService.getTranslation('confirm') || 'Confirmar';
+
+            formularioContacto.innerHTML = `
+                <h3 data-translate="requestAdvice">${requestAdviceText} ${tipoSeguro.toUpperCase()} > ${cobertura.toUpperCase()}</h3>
+                <div>
+                    <label for="nombre" data-translate="name">${nameLabel}</label>
+                    <input type="text" id="nombre" name="nombre" required aria-required="true" data-translate-placeholder="namePlaceholder" placeholder="${namePlaceholder}">
+                    <span class="error-message" id="nombre-error" role="alert"></span>
+                </div>
+                <div>
+                    <label for="apellido" data-translate="lastName">${lastNameLabel}</label>
+                    <input type="text" id="apellido" name="apellido" required aria-required="true" data-translate-placeholder="lastNamePlaceholder" placeholder="${lastNamePlaceholder}">
+                    <span class="error-message" id="apellido-error" role="alert"></span>
+                </div>
+                <div>
+                    <label for="telefono" data-translate="phone">${phoneLabel}</label>
+                    <input type="tel" id="telefono" name="telefono" required aria-required="true" data-translate-placeholder="phonePlaceholder" placeholder="${phonePlaceholder}">
+                    <span class="error-message" id="telefono-error" role="alert"></span>
+                </div>
+                <div>
+                    <label for="email" data-translate="email">${emailLabel}</label>
+                    <input type="email" id="email" name="email" aria-required="false" data-translate-placeholder="emailPlaceholder" placeholder="${emailPlaceholder}">
+                    <span class="error-message" id="email-error" role="alert"></span>
+                </div>
+                <button type="button" id="cargar-mas-info-btn" aria-expanded="false" data-translate="moreInfo">${moreInfoText}</button>
+                <div id="formulario-opcional-container" style="display: none;" aria-hidden="true">
+                </div>
+                <button type="button" id="confirmar-datos-btn" disabled aria-disabled="true" data-translate="confirm">${confirmText}</button>
+            `;
+
+            contenedorFormularios.appendChild(formularioContacto);
+
+            const cargarMasInfoBtn = formularioContacto.querySelector('#cargar-mas-info-btn');
+            const formularioOpcionalContainer = formularioContacto.querySelector('#formulario-opcional-container');
+            const confirmarDatosBtn = formularioContacto.querySelector('#confirmar-datos-btn');
+
+            formularioContacto.addEventListener('input', (e) => {
+                if (e.target.matches('input') && e.target.closest('.formulario-contacto')) {
+                    const errorSpan = formularioContacto.querySelector(`#${e.target.id}-error`);
+                    if (errorSpan) {
+                        validarCampo(e.target, errorSpan);
+                        actualizarEstadoBotonConfirmar();
+                    }
+                }
+            });
+
+            formularioContacto.addEventListener('blur', (e) => {
+                if (e.target.matches('input') && e.target.closest('.formulario-contacto')) {
+                    const errorSpan = formularioContacto.querySelector(`#${e.target.id}-error`);
+                    if (errorSpan) {
+                        validarCampo(e.target, errorSpan);
+                        actualizarEstadoBotonConfirmar();
+                    }
+                }
+            }, true);
+
+            cargarMasInfoBtn.addEventListener('click', () => {
+                const isExpanded = cargarMasInfoBtn.getAttribute('aria-expanded') === 'true';
+                cargarMasInfoBtn.setAttribute('aria-expanded', !isExpanded);
+                formularioOpcionalContainer.style.display = isExpanded ? 'none' : 'block';
+                formularioOpcionalContainer.setAttribute('aria-hidden', isExpanded);
+                if (!isExpanded) {
+                    mostrarFormularioOpcional(tipoSeguro);
+                }
+            });
+
+            function actualizarEstadoBotonConfirmar() {
+                const formularioContacto = document.querySelector('.formulario-contacto');
+                const confirmarDatosBtn = document.querySelector('#confirmar-datos-btn');
+                
+                if (validarFormularioCompleto(formularioContacto)) {
+                    confirmarDatosBtn.disabled = false;
+                    confirmarDatosBtn.classList.remove('disabled');
+                    mostrarNotificacion('success', 'notif_form_complete', 'notif_form_complete_desc');
+                } else {
+                    confirmarDatosBtn.disabled = true;
+                    confirmarDatosBtn.classList.add('disabled');
+                }
+            }
+
+            actualizarEstadoBotonConfirmar();
+
+            confirmarDatosBtn.addEventListener('click', () => {
+                actualizarProgreso(4);
+                if (!confirmarDatosBtn.disabled) {
+                    const datosContacto = {
+                        nombre: formularioContacto.querySelector('#nombre').value,
+                        apellido: formularioContacto.querySelector('#apellido').value,
+                        telefono: formularioContacto.querySelector('#telefono').value,
+                        email: formularioContacto.querySelector('#email').value
+                    };
+                    const datosOpcionales = obtenerDatosFormularioOpcional(formularioOpcionalContainer);
+                    datosContactoGuardados = { ...datosContacto };
+                    datosOpcionalesGuardados = { ...datosOpcionales };
+                    guardarDatosLocalStorage(tipoSeguro, cobertura, datosContacto);
+                    guardarDatosSessionStorage(tipoSeguro, cobertura, datosOpcionales);
+                    mostrarModalResumen(tipoSeguro, cobertura, datosContacto, datosOpcionales);
+                } else {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: translationService.getTranslation('requiredFields') || 'Campos requeridos',
+                        text: translationService.getTranslation('completeRequiredFields') || 'Por favor, complete los campos requeridos.',
+                        confirmButtonText: translationService.getTranslation('understood') || 'Entendido',
+                        confirmButtonColor: '#007bff'
+                    });
+                }
+            });
+
+        } catch (error) {
+            console.error('Error en mostrarFormularioContacto:', error);
+            mostrarNotificacion('error', 'notif_form_error', 'notif_form_error_desc');
         }
-
-        actualizarEstadoBotonConfirmar();
-
-        confirmarDatosBtn.addEventListener('click', () => {
-            actualizarProgreso(4);
-            if (!confirmarDatosBtn.disabled) {
-                const datosContacto = {
-                    nombre: formularioContacto.querySelector('#nombre').value,
-                    apellido: formularioContacto.querySelector('#apellido').value,
-                    telefono: formularioContacto.querySelector('#telefono').value,
-                    email: formularioContacto.querySelector('#email').value
-                };
-                const datosOpcionales = obtenerDatosFormularioOpcional(formularioOpcionalContainer);
-                datosContactoGuardados = { ...datosContacto };
-                datosOpcionalesGuardados = { ...datosOpcionales };
-                guardarDatosLocalStorage(tipoSeguro, cobertura, datosContacto);
-                guardarDatosSessionStorage(tipoSeguro, cobertura, datosOpcionales);
-                mostrarModalResumen(tipoSeguro, cobertura, datosContacto, datosOpcionales);
-            } else {
-                Swal.fire({
-                    icon: 'warning',
-                    title: translationService.getTranslation('requiredFields') || 'Campos requeridos',
-                    text: translationService.getTranslation('completeRequiredFields') || 'Por favor, complete los campos requeridos.',
-                    confirmButtonText: translationService.getTranslation('understood') || 'Entendido',
-                    confirmButtonColor: '#007bff'
-                });
-            }
-        });
     }
 
     function obtenerDatosFormularioOpcional(container) {
