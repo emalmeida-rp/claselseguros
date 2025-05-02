@@ -642,6 +642,17 @@ export const translations = {
         document_placeholder: "Entrez votre numéro de document",
         occupation: "Profession",
         occupation_placeholder: "Entrez votre profession",
-        income: "Revenu Mensuel"
+        income: "Revenu Mensuel",
+        optional_company_name: "Nom de l'Entreprise",
+        optional_company_name_placeholder: "Entrez le nom de l'entreprise",
+        optional_employees_count: "Nombre d'Employés",
+        optional_employees_count_placeholder: "Entrez le nombre d'employés",
+        optional_activity: "Activité Principale",
+        optional_activity_placeholder: "Entrez l'activité principale",
+        optional_risk_level: "Niveau de Risque",
+        optional_risk_level_placeholder: "Sélectionnez le niveau de risque",
+        risk_level_low: "Bas",
+        risk_level_medium: "Moyen",
+        risk_level_high: "Élevé"
     }
 }; 
