@@ -93,29 +93,28 @@ export function mostrarModalResumen(tipoSeguro, cobertura, datosContacto, datosO
     modalTitulo.textContent = `${t.requestAdvice} ${tipoSeguro.toUpperCase()} > ${cobertura.toUpperCase()} (${new Date().toLocaleString()})`;
     modalDatos.innerHTML = '';
 
-    const agregarDatoAlResumen = (label, value) => {
+    const agregarDatoAlResumen = (translationKey, value) => {
         if (value) {
             const listItem = document.createElement('li');
-            const translatedLabel = t[label.toLowerCase().replace(' ', '_')] || label;
-            listItem.textContent = `${translatedLabel}: ${value}`;
+            const translatedLabel = t[translationKey] || translationKey;
+            const cleanLabel = translatedLabel.replace(/:$/, '');
+            listItem.textContent = `${cleanLabel}: ${value}`;
             modalDatos.appendChild(listItem);
         }
     };
 
     // Datos de contacto
-    agregarDatoAlResumen('Nombre', datosContacto.nombre);
-    agregarDatoAlResumen('Apellido', datosContacto.apellido);
-    agregarDatoAlResumen('Teléfono', datosContacto.telefono);
-    agregarDatoAlResumen('Email', datosContacto.email);
+    agregarDatoAlResumen('name', datosContacto.nombre);
+    agregarDatoAlResumen('lastName', datosContacto.apellido);
+    agregarDatoAlResumen('phone', datosContacto.telefono);
+    agregarDatoAlResumen('email', datosContacto.email);
 
     // Datos opcionales
     if (datosOpcionales) {
         for (const key in datosOpcionales) {
             if (datosOpcionales[key]) {
-                const label = key.split('_').map(word => 
-                    word.charAt(0).toUpperCase() + word.slice(1)
-                ).join(' ');
-                agregarDatoAlResumen(label, datosOpcionales[key]);
+                const translationKey = `optional_${key}`;
+                agregarDatoAlResumen(translationKey, datosOpcionales[key]);
             }
         }
     }
