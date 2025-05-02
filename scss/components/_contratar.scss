@@ -292,6 +292,14 @@ $transition-speed: 0.2s;
     margin-top: 3px;
 }
 
+.form-title {
+    color: $color-text;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 1px solid $color-border;
+    padding-bottom: 10px;
+}
 
 .modal {
     display: none;
@@ -335,6 +343,7 @@ $transition-speed: 0.2s;
     color: #333;
     font-size: 1.1em;
     text-align: center;
+    font-weight: bold;
 }
 
 #modal-datos {

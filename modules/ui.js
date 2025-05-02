@@ -87,24 +87,37 @@ export function mostrarModalResumen(tipoSeguro, cobertura, datosContacto, datosO
     const modalDatos = document.getElementById('modal-datos');
     const modalResumen = document.getElementById('modal-resumen');
 
-    modalTitulo.textContent = `Usted eligió ${tipoSeguro.toUpperCase()} ${cobertura.toUpperCase()} (${new Date().toLocaleString()})`;
+    const lang = document.documentElement.lang || 'es';
+    const t = translations[lang];
+
+    modalTitulo.textContent = `${t.requestAdvice} ${tipoSeguro.toUpperCase()} > ${cobertura.toUpperCase()} (${new Date().toLocaleString()})`;
     modalDatos.innerHTML = '';
 
     const agregarDatoAlResumen = (label, value) => {
         if (value) {
             const listItem = document.createElement('li');
-            listItem.textContent = `${label}: ${value}`;
+            const translatedLabel = t[label.toLowerCase().replace(' ', '_')] || label;
+            listItem.textContent = `${translatedLabel}: ${value}`;
             modalDatos.appendChild(listItem);
         }
     };
 
+    // Datos de contacto
     agregarDatoAlResumen('Nombre', datosContacto.nombre);
     agregarDatoAlResumen('Apellido', datosContacto.apellido);
     agregarDatoAlResumen('Teléfono', datosContacto.telefono);
     agregarDatoAlResumen('Email', datosContacto.email);
 
-    for (const key in datosOpcionales) {
-        agregarDatoAlResumen(key.charAt(0).toUpperCase() + key.slice(1).replace('-', ' '), datosOpcionales[key]);
+    // Datos opcionales
+    if (datosOpcionales) {
+        for (const key in datosOpcionales) {
+            if (datosOpcionales[key]) {
+                const label = key.split('_').map(word => 
+                    word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ');
+                agregarDatoAlResumen(label, datosOpcionales[key]);
+            }
+        }
     }
 
     modalResumen.style.display = 'block';

@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const confirmText = translationService.getTranslation('confirm') || 'Confirmar';
 
             formularioContacto.innerHTML = `
-                <h3 data-translate="requestAdvice">${requestAdviceText} ${tipoSeguro.toUpperCase()} > ${cobertura.toUpperCase()}</h3>
+                <h3 class="form-title" id="formulario-titulo">${requestAdviceText} ${tipoSeguro.toUpperCase()} > ${cobertura.toUpperCase()}</h3>
                 <div>
                     <label for="nombre" data-translate="name">${nameLabel}</label>
                     <input type="text" id="nombre" name="nombre" required aria-required="true" data-translate-placeholder="namePlaceholder" placeholder="${namePlaceholder}">
@@ -286,6 +286,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 formularioOpcionalContainer.setAttribute('aria-hidden', isExpanded);
                 if (!isExpanded) {
                     mostrarFormularioOpcional(tipoSeguro);
+                }
+                // Evitar que el título se actualice
+                const tituloFormulario = document.getElementById('formulario-titulo');
+                if (tituloFormulario) {
+                    tituloFormulario.removeAttribute('data-translate');
                 }
             });
 
