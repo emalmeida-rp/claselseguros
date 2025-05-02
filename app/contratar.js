@@ -1,9 +1,47 @@
 import { validarCampo, validarFormularioCompleto } from '../modules/validations.js';
 import { guardarDatosLocalStorage, guardarDatosSessionStorage } from '../modules/storage.js';
-import { cargarFormularioOpcional, actualizarProgreso, mostrarModalResumen } from '../modules/ui.js';
-import { translations } from './translations.js';
+import { actualizarProgreso, mostrarModalResumen } from '../modules/ui.js';
+import { translationService } from './translationService.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+// Función de utilidad para mostrar notificaciones
+function mostrarNotificacion(tipo, claveTitulo, claveMensaje, duracion = 3000) {
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: duracion,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    const titulo = translationService.getTranslation(claveTitulo) || claveTitulo;
+    const mensaje = translationService.getTranslation(claveMensaje) || claveMensaje;
+
+    Toast.fire({
+        icon: tipo,
+        title: titulo,
+        text: mensaje
+    });
+}
+
+let optionalFormsConfig = null;
+
+document.addEventListener('DOMContentLoaded', async () => {
+    // Cargar traducciones al inicio
+    try {
+        await translationService.loadTranslations();
+        // Cargar configuración de formularios opcionales
+        const response = await fetch('/config/optionalForms.json');
+        optionalFormsConfig = await response.json();
+        mostrarNotificacion('success', 'notif_system_ready', 'notif_system_ready_desc');
+    } catch (error) {
+        mostrarNotificacion('error', 'notif_system_error', 'notif_system_error_desc');
+        console.error('Error al cargar configuraciones:', error);
+    }
+
     const botonesSeguroPrincipal = document.querySelectorAll('.tarjeta-boton');
     const contenedorBotonesPrincipal = document.querySelector('.contenedor-botones');
     const contenedorFormularios = document.querySelector('.contenedor-formularios');
@@ -45,57 +83,69 @@ document.addEventListener('DOMContentLoaded', () => {
             { tipo: 'Vehículos Comerciales', icono: 'bi-truck-flatbed' }
         ],
         ART: [
-            { tipo: 'Plan Básico', icono: 'bi-hospital' },
-            { tipo: 'Plan Medio', icono: 'bi-hospital-fill' },
-            { tipo: 'Plan Premium', icono: 'bi-file-medical' },
-            { tipo: 'Dental', icono: 'bi-bandaid' }
+            { tipo: 'Plan Básico', icono: 'bi-hospital', key: 'coverage_plan_básico' },
+            { tipo: 'Plan Medio', icono: 'bi-hospital-fill', key: 'coverage_plan_medio' },
+            { tipo: 'Plan Premium', icono: 'bi-file-medical', key: 'coverage_plan_premium' },
+            { tipo: 'Dental', icono: 'bi-bandaid', key: 'coverage_dental' }
         ]
     };
 
-    // Función para traducir elementos dinámicos
-    function translateDynamicElements() {
-        const lang = document.documentElement.lang || 'es';
-        const t = translations[lang];
+    // Función para traducir un elemento
+    function translateElement(element) {
+        const key = element.getAttribute('data-translate');
+        if (key) {
+            element.textContent = translationService.getTranslation(key);
+        }
+    }
 
-        // Traducir títulos de coberturas
-        const coberturaTitles = document.querySelectorAll('.tarjeta-cobertura h4');
-        coberturaTitles.forEach(title => {
-            const key = title.getAttribute('data-translate');
-            if (key && t[key]) {
-                title.textContent = t[key];
-            }
-        });
+    // Función para crear campos de formulario
+    function createFormField(fieldConfig) {
+        const div = document.createElement('div');
+        div.className = 'mb-3';
+        
+        const label = document.createElement('label');
+        label.className = 'form-label';
+        label.setAttribute('data-translate', fieldConfig.label);
+        label.htmlFor = fieldConfig.id;
+        
+        const input = document.createElement('input');
+        input.type = fieldConfig.type;
+        input.className = 'form-control';
+        input.id = fieldConfig.id;
+        input.setAttribute('data-translate-placeholder', fieldConfig.placeholder);
+        
+        div.appendChild(label);
+        div.appendChild(input);
+        
+        return div;
+    }
 
-        // Traducir formulario de contacto si existe
-        const formularioContacto = document.querySelector('.formulario-contacto');
-        if (formularioContacto) {
-            // Traducir elementos con data-translate
-            const elements = formularioContacto.querySelectorAll('[data-translate]');
-            elements.forEach(element => {
-                const key = element.getAttribute('data-translate');
-                if (t[key]) {
-                    element.textContent = t[key];
-                }
-            });
-
-            // Traducir placeholders
-            const inputs = formularioContacto.querySelectorAll('input[data-translate-placeholder]');
-            inputs.forEach(input => {
-                const key = input.getAttribute('data-translate-placeholder');
-                if (t[key]) {
-                    input.placeholder = t[key];
-                }
-            });
-
-            // Actualizar mensajes de error existentes
-            const errorSpans = formularioContacto.querySelectorAll('.error-message');
-            errorSpans.forEach(span => {
-                const input = formularioContacto.querySelector(`#${span.id.replace('-error', '')}`);
-                if (input && span.textContent) {
-                    validarCampo(input, span);
-                }
+    // Función para mostrar formulario opcional
+    function showOptionalForm(type) {
+        const formContainer = document.getElementById('optionalFormContainer');
+        formContainer.innerHTML = '';
+        
+        const title = document.createElement('h4');
+        title.className = 'mb-4';
+        title.setAttribute('data-translate', `${type}_data`);
+        
+        formContainer.appendChild(title);
+        
+        const config = optionalFormsConfig[type];
+        if (config) {
+            config.fields.forEach(field => {
+                const fieldElement = createFormField(field);
+                formContainer.appendChild(fieldElement);
             });
         }
+        
+        // Traducir todos los elementos
+        translationService.updateTranslations();
+    }
+
+    // Función para traducir elementos dinámicos
+    function translateDynamicElements() {
+        translationService.updateTranslations();
     }
 
     // Escuchar cambios en el idioma
@@ -106,6 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function mostrarCoberturas(tipoSeguro) {
         tipoSeguroSeleccionado = tipoSeguro;
         actualizarProgreso(2);
+        mostrarNotificacion('info', 'notif_select_coverage', 'notif_select_coverage_desc');
 
         if (contenedorCoberturasActivo) {
             contenedorCoberturasActivo.remove();
@@ -126,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const tituloCobertura = document.createElement('h4');
                 tituloCobertura.textContent = cobertura.tipo;
-                tituloCobertura.setAttribute('data-translate', `coverage_${cobertura.tipo.toLowerCase().replace(/ /g, '_')}`);
+                tituloCobertura.setAttribute('data-translate', cobertura.key || `coverage_${cobertura.tipo.toLowerCase().replace(/ /g, '_')}`);
 
                 tarjetaCobertura.appendChild(iconoCobertura);
                 tarjetaCobertura.appendChild(tituloCobertura);
@@ -153,40 +204,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function mostrarFormularioContacto(tipoSeguro, cobertura) {
         actualizarProgreso(3);
+        mostrarNotificacion('info', 'notif_new_form', 'notif_new_form_desc', 2000);
         const formularioContacto = document.createElement('form');
         formularioContacto.classList.add('formulario-contacto');
         formularioContacto.setAttribute('role', 'form');
         formularioContacto.setAttribute('aria-label', `Formulario de contacto para ${tipoSeguro} - ${cobertura}`);
 
-        const lang = document.documentElement.lang || 'es';
-        const t = translations[lang];
-
         formularioContacto.innerHTML = `
-            <h3 data-translate="requestAdvice">${t.requestAdvice} ${tipoSeguro.toUpperCase()} > ${cobertura.toUpperCase()}</h3>
+            <h3 data-translate="requestAdvice">${translationService.getTranslation('requestAdvice')} ${tipoSeguro.toUpperCase()} > ${cobertura.toUpperCase()}</h3>
             <div>
-                <label for="nombre" data-translate="name">${t.name}</label>
-                <input type="text" id="nombre" name="nombre" required aria-required="true" data-translate-placeholder="namePlaceholder" placeholder="${t.namePlaceholder}">
+                <label for="nombre" data-translate="name">${translationService.getTranslation('name')}</label>
+                <input type="text" id="nombre" name="nombre" required aria-required="true" data-translate-placeholder="namePlaceholder" placeholder="${translationService.getTranslation('namePlaceholder')}">
                 <span class="error-message" id="nombre-error" role="alert"></span>
             </div>
             <div>
-                <label for="apellido" data-translate="lastName">${t.lastName}</label>
-                <input type="text" id="apellido" name="apellido" required aria-required="true" data-translate-placeholder="lastNamePlaceholder" placeholder="${t.lastNamePlaceholder}">
+                <label for="apellido" data-translate="lastName">${translationService.getTranslation('lastName')}</label>
+                <input type="text" id="apellido" name="apellido" required aria-required="true" data-translate-placeholder="lastNamePlaceholder" placeholder="${translationService.getTranslation('lastNamePlaceholder')}">
                 <span class="error-message" id="apellido-error" role="alert"></span>
             </div>
             <div>
-                <label for="telefono" data-translate="phone">${t.phone}</label>
-                <input type="tel" id="telefono" name="telefono" required aria-required="true" data-translate-placeholder="phonePlaceholder" placeholder="${t.phonePlaceholder}">
+                <label for="telefono" data-translate="phone">${translationService.getTranslation('phone')}</label>
+                <input type="tel" id="telefono" name="telefono" required aria-required="true" data-translate-placeholder="phonePlaceholder" placeholder="${translationService.getTranslation('phonePlaceholder')}">
                 <span class="error-message" id="telefono-error" role="alert"></span>
             </div>
             <div>
-                <label for="email" data-translate="email">${t.email}</label>
-                <input type="email" id="email" name="email" aria-required="false" data-translate-placeholder="emailPlaceholder" placeholder="${t.emailPlaceholder}">
+                <label for="email" data-translate="email">${translationService.getTranslation('email')}</label>
+                <input type="email" id="email" name="email" aria-required="false" data-translate-placeholder="emailPlaceholder" placeholder="${translationService.getTranslation('emailPlaceholder')}">
                 <span class="error-message" id="email-error" role="alert"></span>
             </div>
-            <button type="button" id="cargar-mas-info-btn" aria-expanded="false" data-translate="moreInfo">${t.moreInfo}</button>
+            <button type="button" id="cargar-mas-info-btn" aria-expanded="false" data-translate="moreInfo">${translationService.getTranslation('moreInfo')}</button>
             <div id="formulario-opcional-container" style="display: none;" aria-hidden="true">
             </div>
-            <button type="button" id="confirmar-datos-btn" disabled aria-disabled="true" data-translate="confirm">${t.confirm}</button>
+            <button type="button" id="confirmar-datos-btn" disabled aria-disabled="true" data-translate="confirm">${translationService.getTranslation('confirm')}</button>
         `;
 
         contenedorFormularios.appendChild(formularioContacto);
@@ -221,13 +270,22 @@ document.addEventListener('DOMContentLoaded', () => {
             formularioOpcionalContainer.style.display = isExpanded ? 'none' : 'block';
             formularioOpcionalContainer.setAttribute('aria-hidden', isExpanded);
             if (!isExpanded) {
-                cargarFormularioOpcional(tipoSeguro, formularioOpcionalContainer);
+                mostrarFormularioOpcional(tipoSeguro);
             }
         });
 
         function actualizarEstadoBotonConfirmar() {
-            confirmarDatosBtn.disabled = !validarFormularioCompleto(formularioContacto);
-            confirmarDatosBtn.classList.toggle('disabled', confirmarDatosBtn.disabled);
+            const formularioContacto = document.querySelector('.formulario-contacto');
+            const confirmarDatosBtn = document.querySelector('#confirmar-datos-btn');
+            
+            if (validarFormularioCompleto(formularioContacto)) {
+                confirmarDatosBtn.disabled = false;
+                confirmarDatosBtn.classList.remove('disabled');
+                mostrarNotificacion('success', 'notif_form_complete', 'notif_form_complete_desc');
+            } else {
+                confirmarDatosBtn.disabled = true;
+                confirmarDatosBtn.classList.add('disabled');
+            }
         }
 
         actualizarEstadoBotonConfirmar();
@@ -250,9 +308,9 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 Swal.fire({
                     icon: 'warning',
-                    title: t?.requiredFields || 'Campos requeridos',
-                    text: t?.completeRequiredFields || 'Por favor, complete los campos requeridos.',
-                    confirmButtonText: t?.understood || 'Entendido',
+                    title: translationService.getTranslation('requiredFields') || 'Campos requeridos',
+                    text: translationService.getTranslation('completeRequiredFields') || 'Por favor, complete los campos requeridos.',
+                    confirmButtonText: translationService.getTranslation('understood') || 'Entendido',
                     confirmButtonColor: '#007bff'
                 });
             }
@@ -265,11 +323,86 @@ document.addEventListener('DOMContentLoaded', () => {
         inputs.forEach(input => {
             datos[input.name] = input.value;
         });
+        mostrarNotificacion('success', 'notif_data_saved', 'notif_data_saved_desc');
         return datos;
+    }
+
+    function mostrarFormularioOpcional(tipoSeguro) {
+        // Normalizar el tipo de seguro para que coincida con las claves del mapeo
+        const tipoSeguroNormalizado = tipoSeguro.toLowerCase().trim();
+        
+        const tipoConfigMap = {
+            'automovil': 'auto',
+            'bienes personales': 'hogar',
+            'vida': 'vida',
+            'art': 'art'
+        };
+
+        const tipoConfig = tipoConfigMap[tipoSeguroNormalizado];
+        if (!tipoConfig) {
+            console.error('Tipo de seguro no válido:', tipoSeguro);
+            mostrarNotificacion('error', 'notif_form_error', 'notif_form_error_desc');
+            return;
+        }
+
+        if (!optionalFormsConfig) {
+            console.error('Configuración de formularios opcionales no cargada');
+            mostrarNotificacion('error', 'notif_system_error', 'notif_system_error_desc');
+            return;
+        }
+
+        const config = optionalFormsConfig[tipoConfig];
+        if (!config) {
+            console.error('Configuración no encontrada para:', tipoConfig);
+            mostrarNotificacion('error', 'notif_form_error', 'notif_form_error_desc');
+            return;
+        }
+
+        const formularioOpcional = document.createElement('div');
+        formularioOpcional.className = 'formulario-opcional mt-4';
+        formularioOpcional.innerHTML = `
+            <h4 data-translate="${config.titleKey}">${translationService.getTranslation(config.titleKey)}</h4>
+            <div class="row">
+                ${config.fields.map(field => `
+                    <div class="col-md-6 mb-3">
+                        <label for="${field.id}" data-translate="${field.labelKey}">${translationService.getTranslation(field.labelKey)}</label>
+                        ${field.type === 'select' ? `
+                            <select class="form-control" 
+                                    id="${field.id}" 
+                                    name="${field.id}"
+                                    data-translate-placeholder="${field.placeholderKey}">
+                                <option value="" disabled selected>${translationService.getTranslation(field.placeholderKey)}</option>
+                                ${field.options.map(option => `
+                                    <option value="${option.value}" data-translate="${option.labelKey}">
+                                        ${translationService.getTranslation(option.labelKey)}
+                                    </option>
+                                `).join('')}
+                            </select>
+                        ` : `
+                            <input type="${field.type}" 
+                                   class="form-control" 
+                                   id="${field.id}" 
+                                   name="${field.id}"
+                                   data-translate-placeholder="${field.placeholderKey}"
+                                   placeholder="${translationService.getTranslation(field.placeholderKey)}">
+                        `}
+                    </div>
+                `).join('')}
+            </div>
+        `;
+
+        const contenedorFormulario = document.querySelector('#formulario-opcional-container');
+        if (contenedorFormulario) {
+            contenedorFormulario.innerHTML = '';
+            contenedorFormulario.appendChild(formularioOpcional);
+            translateDynamicElements();
+            mostrarNotificacion('success', 'notif_form_loaded', 'notif_form_loaded_desc');
+        }
     }
 
     cerrarModalBtn.addEventListener('click', () => {
         modalResumen.style.display = 'none';
+        mostrarNotificacion('info', 'notif_modal_closed', 'notif_modal_closed_desc');
     });
 
     window.addEventListener('click', (event) => {
@@ -441,6 +574,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         boton.addEventListener('blur', () => {
             boton.classList.remove('focused');
+        });
+    });
+
+    // Actualizar el evento de cambio de tipo de seguro
+    document.querySelectorAll('.tipo-seguro').forEach(button => {
+        button.addEventListener('click', function() {
+            const tipoSeguro = this.getAttribute('data-tipo');
+            mostrarFormularioOpcional(tipoSeguro);
         });
     });
 });

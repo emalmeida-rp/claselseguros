@@ -1,0 +1,123 @@
+{
+    "auto": {
+        "titleKey": "form_auto_title",
+        "fields": [
+            {
+                "id": "brand",
+                "type": "text",
+                "labelKey": "form_brand_label",
+                "placeholderKey": "form_brand_placeholder"
+            },
+            {
+                "id": "model",
+                "type": "text",
+                "labelKey": "form_model_label",
+                "placeholderKey": "form_model_placeholder"
+            },
+            {
+                "id": "year",
+                "type": "number",
+                "labelKey": "form_year_label",
+                "placeholderKey": "form_year_placeholder"
+            },
+            {
+                "id": "plate",
+                "type": "text",
+                "labelKey": "form_plate_label",
+                "placeholderKey": "form_plate_placeholder"
+            }
+        ]
+    },
+    "hogar": {
+        "titleKey": "form_hogar_title",
+        "fields": [
+            {
+                "id": "address",
+                "type": "text",
+                "labelKey": "form_address_label",
+                "placeholderKey": "form_address_placeholder"
+            },
+            {
+                "id": "city",
+                "type": "text",
+                "labelKey": "form_city_label",
+                "placeholderKey": "form_city_placeholder"
+            },
+            {
+                "id": "province",
+                "type": "text",
+                "labelKey": "form_province_label",
+                "placeholderKey": "form_province_placeholder"
+            },
+            {
+                "id": "postal_code",
+                "type": "text",
+                "labelKey": "form_postal_code_label",
+                "placeholderKey": "form_postal_code_placeholder"
+            }
+        ]
+    },
+    "vida": {
+        "titleKey": "form_vida_title",
+        "fields": [
+            {
+                "id": "birth_date",
+                "type": "date",
+                "labelKey": "form_birth_date_label",
+                "placeholderKey": "form_birth_date_placeholder"
+            },
+            {
+                "id": "document",
+                "type": "text",
+                "labelKey": "form_document_label",
+                "placeholderKey": "form_document_placeholder"
+            },
+            {
+                "id": "occupation",
+                "type": "text",
+                "labelKey": "form_occupation_label",
+                "placeholderKey": "form_occupation_placeholder"
+            },
+            {
+                "id": "income",
+                "type": "number",
+                "labelKey": "form_income_label",
+                "placeholderKey": "form_income_placeholder"
+            }
+        ]
+    },
+    "art": {
+        "titleKey": "form_art_title",
+        "fields": [
+            {
+                "id": "company_name",
+                "type": "text",
+                "labelKey": "form_company_name_label",
+                "placeholderKey": "form_company_name_placeholder"
+            },
+            {
+                "id": "employees_count",
+                "type": "number",
+                "labelKey": "form_employees_count_label",
+                "placeholderKey": "form_employees_count_placeholder"
+            },
+            {
+                "id": "activity",
+                "type": "text",
+                "labelKey": "form_activity_label",
+                "placeholderKey": "form_activity_placeholder"
+            },
+            {
+                "id": "risk_level",
+                "type": "select",
+                "labelKey": "form_risk_level_label",
+                "placeholderKey": "form_risk_level_placeholder",
+                "options": [
+                    {"value": "bajo", "labelKey": "risk_level_low"},
+                    {"value": "medio", "labelKey": "risk_level_medium"},
+                    {"value": "alto", "labelKey": "risk_level_high"}
+                ]
+            }
+        ]
+    }
+} 
