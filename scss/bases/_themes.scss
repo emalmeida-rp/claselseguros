@@ -1,0 +1,65 @@
+@use "../_variables.scss" as *;
+
+:root {
+    // Tema claro por defecto
+    --color-text: #{$color-text-light};
+    --color-text-secondary: #{$color-text-light-secondary};
+    --color-border: #{$color-border-light};
+    --color-background: #{$color-background-light};
+    --color-background-alt: #{$color-background-light-alt};
+}
+
+[data-theme="dark"] {
+    --color-text: #{$color-text-dark};
+    --color-text-secondary: #{$color-text-dark-secondary};
+    --color-border: #{$color-border-dark};
+    --color-background: #{$color-background-dark};
+    --color-background-alt: #{$color-background-dark-alt};
+}
+
+// Transiciones suaves para el cambio de tema
+* {
+    transition: background-color $transition-speed ease,
+                color $transition-speed ease,
+                border-color $transition-speed ease;
+}
+
+// Ajustes específicos para el tema oscuro
+[data-theme="dark"] {
+    .tarjeta-boton,
+    .tarjeta-cobertura,
+    .formulario-contacto,
+    .modal-contenido {
+        background: linear-gradient(145deg, #{$color-background-dark}, #{$color-background-dark-alt});
+        border-color: #{$color-border-dark};
+        color: #{$color-text-dark};
+    }
+
+    .icono,
+    .icono-cobertura {
+        color: $color-primary-light;
+        background: linear-gradient(145deg, rgba($color-primary, 0.2), rgba($color-primary, 0.1));
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    select {
+        background-color: #{$color-background-dark-alt};
+        border-color: #{$color-border-dark};
+        color: #{$color-text-dark};
+        
+        &:focus {
+            border-color: $color-primary;
+            background-color: #{$color-background-dark};
+        }
+    }
+
+    .modal {
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-contenido {
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    }
+} 

@@ -8,7 +8,7 @@
     label {
         font-size: 0.9rem;
         font-weight: 500;
-        color: var(--text-color, #1f2937);
+        color: var(--text-color, #becbdb);
         margin: 0;
     }
 }
@@ -39,24 +39,6 @@
     }
 }
 
-.dark-theme {
-    #language-select {
-        background-color: var(--select-bg-color, #2d2d2d);
-        border-color: var(--border-color, #404040);
-        color: var(--text-color, #ffffff);
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a0a0a0' d='M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.763L10.825 4z'/%3E%3C/svg%3E");
-
-        &:hover {
-            border-color: var(--primary-color, #3b82f6);
-        }
-
-        &:focus {
-            border-color: var(--primary-color, #3b82f6);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-        }
-    }
-}
-
 .theme-switch-wrapper {
     display: flex;
     align-items: center;
@@ -83,11 +65,28 @@
 
 .dark-theme {
     background-color: #1a1a1a;
-    color: #ffffff;
+    color: #030101;
+
+    // Selector de idioma
+    #language-select {
+        background-color: var(--select-bg-color, #2d2d2d);
+        border-color: var(--border-color, #404040);
+        color: var(--text-color, #ffffff);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a0a0a0' d='M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.763L10.825 4z'/%3E%3C/svg%3E");
+
+        &:hover {
+            border-color: var(--primary-color, #3b82f6);
+        }
+
+        &:focus {
+            border-color: var(--primary-color, #3b82f6);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+    }
 
     // Elementos de texto
-    h1, h2, h3, h4, h5, h6, p, span, label {
-        color: #ffffff;
+    h1, h2, h3, h4, h5, h6, p {
+        color: #140a0a;
     }
 
     // Elementos de formulario
@@ -152,8 +151,8 @@
 
     // Slide container
     .slide-container {
-        background-color: #23272f;
-        color: #ffffff;
+        background: linear-gradient(135deg, #23272f 0%, #2d3a4a 100%) !important;
+        color: #ffffff !important;
     }
 
     // Header
@@ -168,7 +167,7 @@
     // Main
     main {
         background: linear-gradient(0deg, #23272f 0%, #2d3a4a 100%) !important;
-        color: #fff !important;
+        color: #0c0404;
     }
 
     // Navbar

@@ -19,7 +19,7 @@
         left: 0;
         right: 0;
         height: 2px;
-        background-color: $color-border;
+        background-color: $color-border-light;
         z-index: 1;
     }
 }
@@ -27,8 +27,8 @@
 .progress-step {
     position: relative;
     z-index: 1;
-    background: linear-gradient(145deg, $color-background, color.scale($color-background, $lightness: -2%));
-    border: 2px solid $color-border;
+    background: linear-gradient(145deg, $color-background-light, $color-background-light-alt);
+    border: 2px solid $color-border-light;
     border-radius: 50%;
     width: 45px;
     height: 45px;
@@ -55,26 +55,62 @@
     }
 
     &.active {
-        background: linear-gradient(145deg, $color-primary, $color-primary-light);
+        background: linear-gradient(145deg, $color-primary, $color-primary-dark);
         border-color: $color-primary;
-        box-shadow: 0 4px 6px -1px rgba($color-primary, 0.3), 0 2px 4px -1px rgba($color-primary, 0.2);
-        
+        transform: scale(1.1);
+
         .step-number,
         .step-label {
             color: white;
-            transform: scale(1.05);
         }
     }
 
     &.completed {
-        background: linear-gradient(145deg, $color-success, color.scale($color-success, $lightness: -5%));
+        background: linear-gradient(145deg, $color-success, color.scale($color-success, $lightness: -10%));
         border-color: $color-success;
-        box-shadow: 0 4px 6px -1px rgba($color-success, 0.3), 0 2px 4px -1px rgba($color-success, 0.2);
-        
+
         .step-number,
         .step-label {
             color: white;
-            transform: scale(1.05);
+        }
+    }
+}
+
+// Ajustes para tema oscuro
+[data-theme="dark"] {
+    .progress-indicator {
+        &::before {
+            background-color: $color-border-dark;
+        }
+    }
+
+    .progress-step {
+        background: linear-gradient(145deg, $color-background-dark, $color-background-dark-alt);
+        border-color: $color-border-dark;
+
+        .step-number,
+        .step-label {
+            color: $color-text-dark;
+        }
+
+        &.active {
+            background: linear-gradient(145deg, $color-primary, $color-primary-dark);
+            border-color: $color-primary;
+
+            .step-number,
+            .step-label {
+                color: white;
+            }
+        }
+
+        &.completed {
+            background: linear-gradient(145deg, $color-success, color.scale($color-success, $lightness: -10%));
+            border-color: $color-success;
+
+            .step-number,
+            .step-label {
+                color: white;
+            }
         }
     }
 } 
