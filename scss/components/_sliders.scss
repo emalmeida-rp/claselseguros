@@ -108,6 +108,8 @@ $border-radius: 20px;
         transition: all $transition-speed cubic-bezier(0.4, 0, 0.2, 1);
         font-weight: 600;
         letter-spacing: 0.5px;
+        color: aliceblue;
+
 
         &:hover {
             transform: translateY(-2px);
