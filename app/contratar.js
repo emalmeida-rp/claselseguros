@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
         console.error('Error al cargar configuraciones:', error);
         mostrarNotificacion('error', 'notif_system_error', 'notif_system_error_desc');
-        // Cargar coberturas por defecto en caso de error
+    
         coberturas = {
             'bienes personales': [],
             'vida': [],
